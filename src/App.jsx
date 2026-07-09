@@ -1048,7 +1048,7 @@ function MicroscopyContent({ setPage, currentPage }) {
         <div className="px-[3%] w-full relative z-10">
         <div className="max-w-6xl w-full reveal-on-scroll">
           <p className="text-[14px] font-bold tracking-widest text-amber-400 uppercase mb-4">DIVISION 01</p>
-          <h1 className="text-5xl md:text-6xl font-bold tracking-tight uppercase leading-[1] mb-6 text-white">
+          <h1 className="text-5xl md:text-[72px] font-bold tracking-tight uppercase leading-[1] mb-6 text-white">
             MICROSCOPY <span className="font-light text-emerald-300">& IVF</span>
           </h1>
           <p className="text-emerald-100 font-light text-[17px] max-w-2xl border-l-2 border-amber-500 pl-4">
@@ -1192,7 +1192,7 @@ function CamerasContent({ setPage, currentPage }) {
         <div className="px-[3%] w-full relative z-10">
         <div className="max-w-6xl w-full reveal-on-scroll">
           <p className="text-[14px] font-bold tracking-widest text-amber-400 uppercase mb-4">DIVISION 02</p>
-          <h1 className="text-5xl md:text-6xl font-bold tracking-tight uppercase leading-[1] mb-6 text-white">
+          <h1 className="text-5xl md:text-[72px] font-bold tracking-tight uppercase leading-[1] mb-6 text-white">
             DIGITAL <span className="font-light text-emerald-300">CAMERAS</span>
           </h1>
           <p className="text-emerald-100 font-light text-[17px] max-w-2xl border-l-2 border-amber-500 pl-4">
@@ -1308,7 +1308,7 @@ function MachineVisionContent({ setPage, currentPage }) {
         <div className="px-[3%] w-full relative z-10">
         <div className="max-w-6xl w-full reveal-on-scroll">
           <p className="text-[14px] font-bold tracking-[0.25em] text-amber-400 uppercase mb-4">DIVISION 03</p>
-          <h1 className="text-5xl md:text-6xl font-bold tracking-tight uppercase leading-[1] mb-6 text-white">
+          <h1 className="text-5xl md:text-[72px] font-bold tracking-tight uppercase leading-[1] mb-6 text-white">
             MACHINE <span className="font-light text-emerald-300">VISION</span>
           </h1>
           <p className="text-emerald-100 font-light text-[17px] max-w-2xl border-l-2 border-amber-500 pl-4">
@@ -1444,7 +1444,7 @@ function ApplicationsContent({ currentPage }) {
         <div className="px-[3%] w-full relative z-10">
         <div className="max-w-6xl w-full reveal-on-scroll">
           <p className="text-[14px] font-bold tracking-widest text-amber-400 uppercase mb-4">INDUSTRIES WE SERVE</p>
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight uppercase leading-[1] mb-6 text-white">
+          <h1 className="text-4xl md:text-[72px] font-bold tracking-tight uppercase leading-[1] mb-6 text-white">
             MARKET <span className="font-light text-emerald-300">SEGMENTS</span>
           </h1>
           <p className="text-emerald-100/80 font-light text-[17px] leading-relaxed max-w-2xl">
@@ -1596,8 +1596,8 @@ function ClientsContent({ currentPage }) {
         <img src={IMAGES.integration} onError={handleImageError} className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-luminosity" alt="Clients Hero" />
         <div className="px-[3%] w-full relative z-10">
         <div className="max-w-6xl w-full reveal-on-scroll">
-          <p className="text-[14px] font-bold tracking-[0.25em] text-emerald-400 uppercase mb-6">OUR NETWORK</p>
-          <h1 className="text-4xl md:text-6xl font-bold tracking-tight uppercase leading-[1] mb-6 text-white">
+          <p className="text-[14px] font-bold tracking-[0.25em] text-amber-500 uppercase mb-6">OUR NETWORK</p>
+          <h1 className="text-4xl md:text-[72px] font-bold tracking-tight uppercase leading-[1] mb-6 text-white">
             SUCCESS <span className="font-light text-emerald-300">STORIES</span>
           </h1>
           <p className="text-emerald-100/80 font-light text-[17px] leading-relaxed max-w-2xl">
@@ -1644,7 +1644,7 @@ function ClientsContent({ currentPage }) {
             <h2 className="text-3xl md:text-4xl font-light tracking-tighter uppercase mb-12 text-center text-neutral-900">Eminent Installations & Institutions</h2>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {institutions.map((inst, i) => (
-                    <div key={i} className="p-8 border-2 border-slate-300 rounded-xl bg-white shadow-lg flex items-start gap-5 hover:border-emerald-400 hover:shadow-xl transition-all group">
+                    <div key={i} className={`p-8 border-2 border-slate-300 rounded-xl bg-white shadow-lg flex items-start gap-5 hover:border-emerald-400 hover:shadow-xl transition-all group ${i === institutions.length - 1 ? 'lg:col-start-2' : ''}`}>
                         <div className="bg-emerald-50 p-3 rounded-xl shadow-sm group-hover:bg-amber-500 group-hover:text-white transition-colors border border-emerald-100">
                           <Building className="text-amber-500 group-hover:text-white" size={20} strokeWidth={1.5} />
                         </div>
@@ -1658,7 +1658,7 @@ function ClientsContent({ currentPage }) {
             <h2 className="text-3xl md:text-4xl font-light tracking-tighter uppercase mb-12 text-center text-neutral-900">Corporate Clientele by Sector</h2>
             <div className="grid lg:grid-cols-2 gap-8">
                 {corporateSectors.map((sector, i) => (
-                    <div key={i} className="p-10 bg-white border-2 border-slate-300 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group">
+                    <div key={i} className={`p-10 bg-white border-2 border-slate-300 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 group ${i === corporateSectors.length - 1 ? 'lg:col-span-2 lg:w-[calc(50%-1rem)] lg:justify-self-center' : ''}`}>
                         <div className="flex items-center gap-5 mb-6">
                            <div className="w-14 h-14 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-600 border border-emerald-100 group-hover:bg-amber-500 group-hover:text-white transition-colors">
                               <Briefcase size={24} strokeWidth={1.5} />
