@@ -220,7 +220,7 @@ export default function App() {
           </button>
           
           {/* Main Menu Links */}
-          <div className="hidden xl:flex items-center justify-end gap-10 text-[12px] font-semibold tracking-widest uppercase w-full pr-10 pl-4">
+          <div className="hidden xl:flex items-center justify-end gap-10 text-[12px] font-normal tracking-widest uppercase w-full pr-10 pl-4">
             {menuItems.map((item) => {
               const isActive = currentPage === item.id || (item.dropdown && item.dropdown.some(sub => sub.id === currentPage));
               return (
@@ -243,7 +243,7 @@ export default function App() {
                         <button 
                           key={subItem.label} 
                           onClick={() => setCurrentPage(subItem.id)}
-                          className="text-left px-5 py-3.5 text-[11px] text-emerald-100 hover:bg-emerald-900 hover:text-amber-400 rounded-xl transition-colors tracking-widest uppercase font-semibold"
+                          className="text-left px-5 py-3.5 text-[11px] text-emerald-100 hover:bg-emerald-900 hover:text-amber-400 rounded-xl transition-colors tracking-widest uppercase font-normal"
                         >
                           {subItem.label}
                         </button>
