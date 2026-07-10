@@ -63,6 +63,31 @@ function LinkedInIcon({ size = 16, className = '' }) {
   );
 }
 
+function NavDropdownItems({ items, setCurrentPage, depth = 0 }) {
+  const groupNames = ['group/sub', 'group/sub2', 'group/sub3'];
+  const panelStates = [
+    'opacity-0 -translate-x-2 pointer-events-none group-hover/sub:opacity-100 group-hover/sub:translate-x-0 group-hover/sub:pointer-events-auto',
+    'opacity-0 -translate-x-2 pointer-events-none group-hover/sub2:opacity-100 group-hover/sub2:translate-x-0 group-hover/sub2:pointer-events-auto',
+    'opacity-0 -translate-x-2 pointer-events-none group-hover/sub3:opacity-100 group-hover/sub3:translate-x-0 group-hover/sub3:pointer-events-auto'
+  ];
+  return items.map((item) => (
+    <div key={item.label} className={`relative ${groupNames[depth % 3]}`}>
+      <button
+        onClick={() => setCurrentPage(item.id)}
+        className="w-full flex items-center justify-between gap-3 text-left px-4 py-3 text-[11px] text-emerald-100 hover:bg-emerald-900 hover:text-amber-400 rounded-xl transition-colors tracking-widest uppercase font-normal whitespace-nowrap"
+      >
+        {item.label}
+        {item.submenu && <ChevronRight size={13} className="opacity-70 flex-shrink-0 rotate-180" />}
+      </button>
+      {item.submenu && (
+        <div className={`absolute top-0 right-full w-max min-w-[9rem] bg-black border border-emerald-800/50 shadow-2xl rounded-xl transition-all duration-300 flex flex-col p-2 ${panelStates[depth % 3]}`}>
+          <NavDropdownItems items={item.submenu} setCurrentPage={setCurrentPage} depth={depth + 1} />
+        </div>
+      )}
+    </div>
+  ));
+}
+
 // ---------------------------------------------------------
 // MAIN APP COMPONENT & ROUTER
 // ---------------------------------------------------------
@@ -154,10 +179,38 @@ export default function App() {
       label: 'Products', 
       id: 'products-overview', 
       dropdown: [
-        { label: 'Microscopy & IVF', id: 'microscopy' },
+        {
+          label: 'Microscopy & IVF',
+          id: 'microscopy',
+          submenu: [
+            { label: 'Stereo Microscopes', id: 'stereo-microscopes' },
+            {
+              label: 'Compound Microscopes',
+              id: 'microscopy',
+              submenu: [
+                {
+                  label: 'Upright Microscopes',
+                  id: 'microscopy',
+                  submenu: [
+                    { label: 'Phase Contrast', id: 'phase-contrast' }
+                  ]
+                },
+                {
+                  label: 'Inverted Microscopes',
+                  id: 'microscopy',
+                  submenu: [
+                    { label: 'Biological Microscopes', id: 'biological-microscopes' },
+                    { label: 'Metallurgical Microscopes', id: 'metallurgical-microscopes' }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        { label: 'Special Purpose Systems', id: 'special-purpose-systems' },
         { label: 'Digital Cameras', id: 'cameras' },
         { label: 'Machine Vision', id: 'machine-vision' }
-      ] 
+      ]
     },
     { label: 'Applications', id: 'applications' },
     { label: 'Clients', id: 'clients' },
@@ -238,16 +291,8 @@ export default function App() {
                   
                   {/* Dropdown Menu */}
                   {item.dropdown && (
-                    <div className="absolute top-[100%] left-1/2 -translate-x-1/2 w-64 bg-black border border-emerald-800/50 shadow-2xl rounded-xl opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 overflow-hidden flex flex-col p-2">
-                      {item.dropdown.map(subItem => (
-                        <button 
-                          key={subItem.label} 
-                          onClick={() => setCurrentPage(subItem.id)}
-                          className="text-left px-5 py-3.5 text-[11px] text-emerald-100 hover:bg-emerald-900 hover:text-amber-400 rounded-xl transition-colors tracking-widest uppercase font-normal"
-                        >
-                          {subItem.label}
-                        </button>
-                      ))}
+                    <div className="absolute top-[100%] left-1/2 -translate-x-1/2 w-64 bg-black border border-emerald-800/50 shadow-2xl rounded-xl opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 flex flex-col p-2">
+                      <NavDropdownItems items={item.dropdown} setCurrentPage={setCurrentPage} />
                     </div>
                   )}
                 </div>
@@ -277,6 +322,11 @@ export default function App() {
         {currentPage === 'team' && <TeamContent setPage={setCurrentPage} currentPage={currentPage} />}
         {currentPage === 'products-overview' && <ProductsOverviewContent setPage={setCurrentPage} currentPage={currentPage} />}
         {currentPage === 'microscopy' && <MicroscopyContent setPage={setCurrentPage} currentPage={currentPage} />}
+        {currentPage === 'stereo-microscopes' && <StereoMicroscopesContent setPage={setCurrentPage} currentPage={currentPage} />}
+        {currentPage === 'phase-contrast' && <PhaseContrastContent setPage={setCurrentPage} currentPage={currentPage} />}
+        {currentPage === 'biological-microscopes' && <BiologicalMicroscopesContent setPage={setCurrentPage} currentPage={currentPage} />}
+        {currentPage === 'metallurgical-microscopes' && <MetallurgicalMicroscopesContent setPage={setCurrentPage} currentPage={currentPage} />}
+        {currentPage === 'special-purpose-systems' && <SpecialPurposeSystemsContent setPage={setCurrentPage} currentPage={currentPage} />}
         {currentPage === 'cameras' && <CamerasContent setPage={setCurrentPage} currentPage={currentPage} />}
         {currentPage === 'machine-vision' && <MachineVisionContent setPage={setCurrentPage} currentPage={currentPage} />}
         {currentPage === 'applications' && <ApplicationsContent setPage={setCurrentPage} currentPage={currentPage} />}
@@ -1100,23 +1150,23 @@ function MicroscopyContent({ setPage, currentPage }) {
 
                 <div className="bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl transition-all">
                   <div className="w-14 h-14 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-700 border border-black/5 mb-6"><Microscope size={28}/></div>
-                  <h3 className="text-2xl font-medium text-emerald-950 mb-4">Upright Compound</h3>
-                  <p className="text-black/60 text-[17px] font-light leading-relaxed mb-6">Widely used for Clinical Diagnostics and Material Science. Features Halogen/LED illumination with high-res multi-objective nosepieces.</p>
+                  <h3 className="text-2xl font-medium text-emerald-950 mb-4">Compound Microscopes</h3>
+                  <p className="text-black/60 text-[17px] font-light leading-relaxed mb-6">Upright & Inverted systems widely used for Clinical Diagnostics, Material Science, and live cell observation. Features Halogen/LED illumination with high-res multi-objective nosepieces.</p>
                   <ul className="space-y-2 text-[13px] text-black/50 font-light border-t border-black/5 pt-4">
-                    <li>• Phase Contrast for live cells</li>
+                    <li>• Phase Contrast, Dark Field & DIC</li>
                     <li>• Strain-free POL objectives</li>
-                    <li>• Motorised joystick research ops</li>
+                    <li>• Inverted setups for flasks & metallurgy</li>
                   </ul>
                 </div>
 
                 <div className="bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl transition-all">
                   <div className="w-14 h-14 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-700 border border-black/5 mb-6"><Beaker size={28}/></div>
-                  <h3 className="text-2xl font-medium text-emerald-950 mb-4">Inverted Setups</h3>
-                  <p className="text-black/60 text-[17px] font-light leading-relaxed mb-6">Light source above, objectives below. Observe live cells in flasks without disruption or study heavy metallurgical polished samples.</p>
+                  <h3 className="text-2xl font-medium text-emerald-950 mb-4">Special Purpose Systems</h3>
+                  <p className="text-black/60 text-[17px] font-light leading-relaxed mb-6">Advanced configurations engineered for specialised research and clinical procedures — from IVF workstations to fluorescence and polarized light analysis.</p>
                   <ul className="space-y-2 text-[13px] text-black/50 font-light border-t border-black/5 pt-4">
-                    <li>• IVF ICSI & IMSI manipulators</li>
-                    <li>• Metallurgical grain analysis</li>
-                    <li>• Stem Cell observation</li>
+                    <li>• IVF ICSI & IMSI micro-manipulators</li>
+                    <li>• Fluorescence & Polarizing systems</li>
+                    <li>• Metallurgical & Stem Cell analysis</li>
                   </ul>
                 </div>
             </div>
@@ -1173,6 +1223,492 @@ function MicroscopyContent({ setPage, currentPage }) {
                   <div className="w-full md:w-auto px-8 py-4 border-2 border-amber-500 rounded-xl bg-amber-50 text-amber-600 shadow-md">Analysis</div>
               </div>
           </section>
+        </div>
+      </main>
+    </>
+  );
+}
+
+// ---------------------------------------------------------
+// 5A-1. SOLUTIONS - STEREO MICROSCOPES
+// ---------------------------------------------------------
+function StereoMicroscopesContent({ currentPage }) {
+  usePageScroll(currentPage);
+  return (
+    <>
+      <section className="sticky top-0 h-screen w-full flex flex-col justify-center bg-black text-white relative overflow-hidden pt-32 z-0">
+        <div className="absolute inset-0 bg-black/80 mix-blend-overlay z-0"></div>
+        <img src={IMAGES.microscopy} onError={handleImageError} className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-luminosity" alt="Stereo Microscopes" />
+        <div className="px-[3%] w-full relative z-10">
+        <div className="max-w-6xl w-full reveal-on-scroll">
+          <p className="text-[14px] font-bold tracking-widest text-amber-400 uppercase mb-4">MICROSCOPY & IVF</p>
+          <h1 className="text-5xl md:text-[72px] font-bold tracking-tight uppercase leading-[1] mb-6 text-white">
+            STEREO <span className="font-light text-emerald-300">MICROSCOPES</span>
+          </h1>
+          <p className="text-emerald-100 font-light text-[17px] max-w-2xl border-l-2 border-amber-500 pl-4">
+            Large fields of view, long working distances, and unmatched flexibility for researchers and industry.
+          </p>
+        </div>
+        </div>
+      </section>
+
+      <main className="relative z-10 bg-emerald-50 rounded-t-xl shadow-[0_-20px_50px_rgba(0,0,0,0.1)] py-[10vh]">
+        <div className="max-w-[1440px] mx-auto px-[3%]">
+          <section className="reveal-on-scroll bg-white p-10 md:p-14 rounded-xl border-2 border-slate-300 shadow-lg">
+            <div className="max-w-4xl space-y-6 text-[17px] font-light leading-relaxed text-black/60">
+              <p>
+                Stereo microscopes is configured when we are in the need of Large Field of View, Long Working Distance but Low magnification. Flexibility is the key feature of Optical stereo Microscope.
+              </p>
+              <p>
+                Stereo Microscopes are capable of offering the 3Dimensional image at Observation or Eyepiece level to the user. Generally Stereo Microscopes are offered with various combinations of Objectives, Zoom body and Eyepiece pair.
+              </p>
+              <p>
+                Hence, stereo Microscope have become the first choice of researchers as it demands either No sample preparation or very minimal sample preparation.
+              </p>
+              <p>
+                Mostly the Stereo Microscope are used in Reflected Light (sometimes in Transmitted Light mode) illumination. The stereo Microscope can accommodate variety of illumination or Lighting attachments.
+              </p>
+              <p>
+                One of the most Popular or widely used Stereo microscope illumination is Ring Light illumination, Ring Light with Segment Control, Goose Neck illumination and LED Spot Light Illumination.
+              </p>
+              <p>
+                A Transmitted Light illumination with Tiltable Mirror or Transmitted Light illumination with Polariser Analyser attachment makes the Stereo Microscope flexible of industrial | Material Science use.
+              </p>
+              <p>
+                We can offer a suitable either Coarse Focus or Coarse and Fine focus column. Motorised Zoom, Motorised Focus or even Motorised XY Stage combination is possible with these stereo microscopes.
+              </p>
+              <p className="border-t border-black/5 pt-6">
+                <span className="font-bold text-emerald-950">Key Words : </span>
+                Zoology | Entomology | Mycology | Earth Science | Dermatology | IVF ICSI | Forensic Science | Failure Analysis | Mining | Gems - Jewellery | Cosmetology.
+              </p>
+            </div>
+          </section>
+
+          <section className="reveal-on-scroll mt-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                { img: 1, caption: 'Stereo Microscopes with Coarse and Fine focus column' },
+                { img: 3, caption: 'Stereo Microscope with Transmitted Light Base' },
+                { img: 5, caption: 'Stereo Microscope ( Trinocular ) with Boom Stand' },
+                { img: 6, caption: 'Spot Light or Goose neck Halogen illumination' },
+                { img: 2, caption: 'Stereo Microscopes with Coarse and Fine focus column' },
+                { img: 8, caption: 'Segmented Ring Light' },
+                { img: 9, caption: 'Various flexible Boom Stands for Stereo Microscope' },
+                { img: 7, caption: 'Spot Light or Goose neck LED illumination' },
+                { img: 4, caption: 'Stereo Microscopes with Coarse and Fine focus column' }
+              ].map((item) => (
+                <div key={item.img} className="bg-white rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all p-6 flex flex-col">
+                  <div className="flex items-center justify-center h-[300px] md:h-[340px] mb-5">
+                    <img src={`/stereo/stereo-${item.img}.jpg`} loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" alt={item.caption} />
+                  </div>
+                  <p className="text-[16px] font-semibold text-slate-700 text-center leading-snug mt-auto">{item.caption}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
+      </main>
+    </>
+  );
+}
+
+// ---------------------------------------------------------
+// 5A-2. SOLUTIONS - PHASE CONTRAST MICROSCOPE
+// ---------------------------------------------------------
+function PhaseContrastContent({ currentPage }) {
+  usePageScroll(currentPage);
+  return (
+    <>
+      <section className="sticky top-0 h-screen w-full flex flex-col justify-center bg-black text-white relative overflow-hidden pt-32 z-0">
+        <div className="absolute inset-0 bg-black/80 mix-blend-overlay z-0"></div>
+        <img src={IMAGES.microscopy} onError={handleImageError} className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-luminosity" alt="Phase Contrast Microscope" />
+        <div className="px-[3%] w-full relative z-10">
+        <div className="max-w-6xl w-full reveal-on-scroll">
+          <p className="text-[14px] font-bold tracking-widest text-amber-400 uppercase mb-4">MICROSCOPY & IVF</p>
+          <h1 className="text-5xl md:text-[72px] font-bold tracking-tight uppercase leading-[1] mb-6 text-white">
+            PHASE CONTRAST <span className="font-light text-emerald-300">MICROSCOPE</span>
+          </h1>
+          <p className="text-emerald-100 font-light text-[17px] max-w-2xl border-l-2 border-amber-500 pl-4">
+            Observe living cells and transparent specimens in their natural state — no staining required.
+          </p>
+        </div>
+        </div>
+      </section>
+
+      <main className="relative z-10 bg-emerald-50 rounded-t-xl shadow-[0_-20px_50px_rgba(0,0,0,0.1)] py-[10vh]">
+        <div className="max-w-[1440px] mx-auto px-[3%]">
+          <section className="reveal-on-scroll flex flex-col lg:flex-row gap-10 items-stretch">
+            <div className="lg:w-1/2 bg-white p-10 md:p-14 rounded-xl border-2 border-slate-300 shadow-lg">
+              <div className="space-y-6 text-[17px] font-light leading-relaxed text-black/60">
+                <p>
+                  Phase contrast microscope is a specialized optical microscope that enhances the contrast of transparent and colorless specimens, such as living cells, bacteria, and thin tissue slices, without the need for staining.
+                </p>
+                <p>
+                  It works by converting phase shifts in light passing through the specimen into changes in brightness in the image. This system uses a phase ring in the objective lens and a matching annular ring in the condenser to create differences in phase, which are then translated into intensity differences.
+                </p>
+                <p>
+                  It allows for the visualization of structures that are invisible or barely visible under a standard brightfield microscope.
+                </p>
+                <p>
+                  No Need for Staining: Specimens can be observed in their natural state, making it ideal for studying live cells and other delicate structures.
+                </p>
+              </div>
+            </div>
+            <div className="lg:w-1/2 flex flex-col">
+              <div className="bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center flex-grow min-h-[400px]">
+                <img src="/phase-contrast/phase-4.png" loading="lazy" decoding="async" className="max-h-[480px] max-w-full object-contain" alt="Upright Phase Contrast Microscope" />
+              </div>
+              <p className="text-[16px] font-semibold text-slate-700 text-center leading-snug mt-5">Upright Phase Contrast Microscope</p>
+            </div>
+          </section>
+
+          <section className="reveal-on-scroll mt-20 border-t border-emerald-200 pt-16">
+            <h2 className="text-2xl md:text-3xl font-medium text-emerald-950 text-center mb-12">Upright Microscopes</h2>
+            <div className="flex flex-col lg:flex-row gap-10 items-start">
+              <div className="lg:w-1/2 flex flex-col">
+                <div className="bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center min-h-[400px]">
+                  <img src="/phase-contrast/phase-3.jpg" loading="lazy" decoding="async" className="max-h-[480px] max-w-full object-contain" alt="Upright Motorised Research Microscope and Joystick control" />
+                </div>
+                <p className="text-[16px] font-semibold text-slate-700 text-center leading-snug mt-5">Upright Motorised Research Microscope and Joystick control</p>
+              </div>
+              <div className="lg:w-1/2 space-y-6 text-[17px] font-light leading-relaxed text-black/60 lg:pt-6">
+                <p>
+                  These Upright Microscopes are offered with Transmitted Light and Reflected Bright Field, Phase Contrast, Dark Field, Fluorescence and DIC attachments considering its utilisation in Biological Applications.
+                </p>
+                <p>
+                  The Upright Microscopes are also offered with Reflected Light Bright Field, Dark Field, Differential Interference Contrast attachment which widely used in Material Science applications.
+                </p>
+              </div>
+            </div>
+          </section>
+
+          <section className="reveal-on-scroll mt-20 border-t border-emerald-200 pt-16">
+            <h2 className="text-2xl md:text-3xl font-medium text-emerald-950 text-center mb-12">Polarising Microscopes</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              <div className="flex flex-col">
+                <div className="bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center min-h-[400px]">
+                  <img src="/phase-contrast/phase-2.jpg" loading="lazy" decoding="async" className="max-h-[480px] max-w-full object-contain" alt="Student Polarising Microscope" />
+                </div>
+                <p className="text-[16px] font-semibold text-slate-700 text-center leading-snug mt-5">Student Polarising Microscope</p>
+              </div>
+              <div className="flex flex-col">
+                <div className="bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center min-h-[400px]">
+                  <img src="/phase-contrast/phase-1.jpg" loading="lazy" decoding="async" className="max-h-[480px] max-w-full object-contain" alt="Polarising Microscope with Reflected Light POL Attachment" />
+                </div>
+                <p className="text-[16px] font-semibold text-slate-700 text-center leading-snug mt-5">Polarising Microscope with Reflected Light POL Attachment</p>
+              </div>
+            </div>
+
+            <h2 className="text-2xl md:text-3xl font-medium text-emerald-950 text-center mt-20 mb-12">Upright Microscopes</h2>
+            <div className="flex flex-col lg:flex-row gap-10 items-start">
+              <div className="lg:w-1/2 flex flex-col">
+                <div className="bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center min-h-[400px]">
+                  <img src="/phase-contrast/phase-1.jpg" loading="lazy" decoding="async" className="max-h-[480px] max-w-full object-contain" alt="Polarising Microscope with Reflected Light POL Attachment" />
+                </div>
+                <p className="text-[16px] font-semibold text-slate-700 text-center leading-snug mt-5">Polarising Microscope with Reflected Light POL Attachment</p>
+              </div>
+              <div className="lg:w-1/2 space-y-6 text-[17px] font-light leading-relaxed text-black/60 lg:pt-6">
+                <p>
+                  Polarising Microscope is one of the most widely used upright Microscope with many unique features designed to cater the needs of Earth Science and Polymer Science research.
+                </p>
+                <p>
+                  Polarised Light Transmitted Light and | or Reflected Light Microscopes are extensively used in Petrology, Sedimentology science where the need is 360 rotatable Graduated Ceramic Stage, Strain Free POL objectives.
+                </p>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </>
+  );
+}
+
+// ---------------------------------------------------------
+// 5A-3. SOLUTIONS - BIOLOGICAL MICROSCOPES
+// ---------------------------------------------------------
+function BiologicalMicroscopesContent({ currentPage }) {
+  usePageScroll(currentPage);
+  return (
+    <>
+      <section className="sticky top-0 h-screen w-full flex flex-col justify-center bg-black text-white relative overflow-hidden pt-32 z-0">
+        <div className="absolute inset-0 bg-black/80 mix-blend-overlay z-0"></div>
+        <img src={IMAGES.microscopy} onError={handleImageError} className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-luminosity" alt="Inverted Biological Microscopes" />
+        <div className="px-[3%] w-full relative z-10">
+        <div className="max-w-6xl w-full reveal-on-scroll">
+          <p className="text-[14px] font-bold tracking-widest text-amber-400 uppercase mb-4">MICROSCOPY & IVF</p>
+          <h1 className="text-5xl md:text-[72px] font-bold tracking-tight uppercase leading-[1] mb-6 text-white">
+            INVERTED BIOLOGICAL <span className="font-light text-emerald-300">MICROSCOPES</span>
+          </h1>
+          <p className="text-emerald-100 font-light text-[17px] max-w-2xl border-l-2 border-amber-500 pl-4">
+            Observe live cells and cultures from below, without disturbing the sample.
+          </p>
+        </div>
+        </div>
+      </section>
+
+      <main className="relative z-10 bg-emerald-50 rounded-t-xl shadow-[0_-20px_50px_rgba(0,0,0,0.1)] py-[10vh]">
+        <div className="max-w-[1440px] mx-auto px-[3%]">
+          <section className="reveal-on-scroll flex flex-col lg:flex-row gap-10 items-stretch">
+            <div className="lg:w-1/2 bg-white p-10 md:p-14 rounded-xl border-2 border-slate-300 shadow-lg">
+              <div className="space-y-6 text-[17px] font-light leading-relaxed text-black/60">
+                <p>
+                  Inverted biological microscope are designed where the light source and condenser are located above the stage and the Magnifying objectives are located below the stage.
+                </p>
+                <p>
+                  The focusing mechanism is used to move the Objectives (nosepiece focussing) keeping the stage as steady as possible.
+                </p>
+                <p>
+                  Compared to traditional Upright microscopes where the objectives are located above the stage | sample, inverted microscopes have the objectives below the stage.
+                </p>
+                <p>
+                  This combination allows for the observation of specimens from the bottom making it easier to view specimens in larger containers, such as culture dishes or flasks.
+                </p>
+              </div>
+            </div>
+            <div className="lg:w-1/2 flex flex-col">
+              <div className="bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center flex-grow min-h-[400px]">
+                <img src="/biological/bio-3.jpg" loading="lazy" decoding="async" className="max-h-[480px] max-w-full object-contain" alt="Inverted Research Microscope" />
+              </div>
+              <p className="text-[16px] font-semibold text-slate-700 text-center leading-snug mt-5">Inverted Research Microscope</p>
+            </div>
+          </section>
+
+          <section className="reveal-on-scroll mt-20 border-t border-emerald-200 pt-16">
+            <h2 className="text-2xl md:text-3xl font-medium text-emerald-950 text-center mb-12">Inverted Fluorescence Microscope</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              <div className="bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center min-h-[400px]">
+                <img src="/biological/bio-2.jpg" loading="lazy" decoding="async" className="max-h-[480px] max-w-full object-contain" alt="Inverted fluorescence biological microscope" />
+              </div>
+              <div className="bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center min-h-[400px]">
+                <img src="/biological/bio-1.jpg" loading="lazy" decoding="async" className="max-h-[480px] max-w-full object-contain" alt="Inverted fluorescence biological microscope" />
+              </div>
+            </div>
+          </section>
+
+          <section className="reveal-on-scroll mt-20 border-t border-emerald-200 pt-16">
+            <h2 className="text-2xl md:text-3xl font-medium text-emerald-950 text-center mb-12">Inverted Tissue Culture Microscope</h2>
+            <div className="flex flex-col lg:flex-row gap-10 items-center">
+              <div className="lg:w-1/2 space-y-6 text-[17px] font-light leading-relaxed text-black/60">
+                <p>
+                  The light source and condenser are positioned above the stage, allowing for easy adjustment and efficient illumination of the specimen from the top.
+                </p>
+                <p>
+                  Inverted microscopes are ideal for observing Live cells in Culture flasks or Petri dishes without disrupting the environment of the container.
+                </p>
+                <p>
+                  Traditionally the inverted Microscope with Phase Contrast attachment is a preferred choice of users working on Live Cell Imaging, Stem Cell, Cell Biology and Bio-Technology applications.
+                </p>
+                <p>
+                  Inverted Microscopes are also offered with Fluorescence and DIC attachments and they are configurable for Motorisation depending on the user needs | requirements.
+                </p>
+              </div>
+              <div className="lg:w-1/2 bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center min-h-[400px]">
+                <img src="/biological/bio-5.jpg" loading="lazy" decoding="async" className="max-h-[480px] max-w-full object-contain" alt="Inverted Tissue Culture Microscope" />
+              </div>
+            </div>
+          </section>
+
+          <section className="reveal-on-scroll mt-20 border-t border-emerald-200 pt-16">
+            <h2 className="text-2xl md:text-3xl font-medium text-emerald-950 text-center mb-12">Inverted Microscopes</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-8">
+              <div className="bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center min-h-[300px]">
+                <img src="/biological/bio-7.jpg" loading="lazy" decoding="async" className="max-h-[240px] max-w-full object-contain" alt="Cell culture flask" />
+              </div>
+              <div className="bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center min-h-[300px]">
+                <img src="/biological/bio-8.jpg" loading="lazy" decoding="async" className="max-h-[240px] max-w-full object-contain" alt="Petri dishes" />
+              </div>
+              <div className="bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center min-h-[300px]">
+                <img src="/biological/bio-9.jpg" loading="lazy" decoding="async" className="max-h-[240px] max-w-full object-contain" alt="96-well microplate" />
+              </div>
+            </div>
+            <div className="flex flex-col lg:flex-row gap-10 items-stretch">
+              <div className="lg:w-1/2">
+                <img src="/biological/bio-10.jpg" loading="lazy" decoding="async" className="w-full h-full object-cover rounded-xl border-2 border-slate-300 shadow-lg" alt="ICSI micromanipulation" />
+              </div>
+              <div className="lg:w-1/2 flex flex-col justify-center">
+                <h3 className="text-2xl font-medium text-emerald-950 mb-6">Key Words:</h3>
+                <ul className="list-disc list-inside space-y-2 text-[17px] font-light leading-relaxed text-black/60">
+                  <li>Microbiology</li>
+                  <li>Developmental</li>
+                  <li>Biology Embryology</li>
+                  <li>Virology</li>
+                  <li>Microbiology</li>
+                  <li>ICSI</li>
+                  <li>IMSI</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+        </div>
+      </main>
+    </>
+  );
+}
+
+// ---------------------------------------------------------
+// 5A-4. SOLUTIONS - METALLURGICAL MICROSCOPES
+// ---------------------------------------------------------
+function MetallurgicalMicroscopesContent({ currentPage }) {
+  usePageScroll(currentPage);
+  return (
+    <>
+      <section className="sticky top-0 h-screen w-full flex flex-col justify-center bg-black text-white relative overflow-hidden pt-32 z-0">
+        <div className="absolute inset-0 bg-black/80 mix-blend-overlay z-0"></div>
+        <img src={IMAGES.microscopy} onError={handleImageError} className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-luminosity" alt="Inverted Metallurgical Microscope" />
+        <div className="px-[3%] w-full relative z-10">
+        <div className="max-w-6xl w-full reveal-on-scroll">
+          <p className="text-[14px] font-bold tracking-widest text-amber-400 uppercase mb-4">MICROSCOPY & IVF</p>
+          <h1 className="text-5xl md:text-[72px] font-bold tracking-tight uppercase leading-[1] mb-6 text-white">
+            METALLURGICAL <span className="font-light text-emerald-300">MICROSCOPES</span>
+          </h1>
+          <p className="text-emerald-100 font-light text-[17px] max-w-2xl border-l-2 border-amber-500 pl-4">
+            Examine large, heavy, and polished material surfaces with maximum flexibility.
+          </p>
+        </div>
+        </div>
+      </section>
+
+      <main className="relative z-10 bg-emerald-50 rounded-t-xl shadow-[0_-20px_50px_rgba(0,0,0,0.1)] py-[10vh]">
+        <div className="max-w-[1440px] mx-auto px-[3%]">
+          <section className="reveal-on-scroll flex flex-col lg:flex-row gap-10 items-stretch">
+            <div className="lg:w-1/2 bg-white p-10 md:p-14 rounded-xl border-2 border-slate-300 shadow-lg">
+              <div className="space-y-6 text-[17px] font-light leading-relaxed text-black/60">
+                <p>
+                  Inverted metallurgical microscope is Optical microscope designed for the examination and analysis of the Any Microstructure of opaque materials like Metals, Minerals, Ceramics, and Composites.
+                </p>
+                <p>
+                  Unlike traditional upright microscopes, the objective lenses of an inverted metallurgical microscope are located beneath the stage. The Stage is fixed to the microscope stand and Objective nosepiece is moved to achieve the focusing of the specimen.
+                </p>
+                <p>
+                  This offers the maximum flexibility to the users to observe the Large, Heavy, Polished Material surface ( which is kept upside down).
+                </p>
+                <p>
+                  The advantage of inverted Microscope is large working distance and stable XY stage.
+                </p>
+              </div>
+            </div>
+            <div className="lg:w-1/2 flex flex-col">
+              <div className="bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center flex-grow min-h-[400px]">
+                <img src="/metallurgical/metallurgical-1.jpg" loading="lazy" decoding="async" className="max-h-[480px] max-w-full object-contain" alt="Inverted Metallurgical Microscope" />
+              </div>
+              <p className="text-[16px] font-semibold text-slate-700 text-center leading-snug mt-5">Inverted Metallurgical Microscope</p>
+            </div>
+          </section>
+
+          <section className="reveal-on-scroll mt-20 border-t border-emerald-200 pt-16 flex flex-col lg:flex-row gap-10 items-stretch">
+            <div className="lg:w-1/2 space-y-6 text-[17px] font-light leading-relaxed text-black/60">
+              <p>
+                The metallurgical Microscope are used for an examination of metal surfaces, Study grain structures, Phases Analysis and defects in material.
+              </p>
+              <p>
+                Widely used in Analysis of ceramics, Composites, and polymers to understand the microstructure and Performance characteristics.
+              </p>
+              <p>
+                The Quality Control process in any manufacturing industry is incomplete without Optical Microscopes. Metallurgical Microscope play a key role in inspection of surface quality and integrity of materials and products.
+              </p>
+              <p>
+                Failure Analysis and investigation, study of fracture surfaces or defects is possible only with Optical Microscopes.
+              </p>
+              <p>
+                The Sample preparation process also play very important role in Product Development and Failure Analysis.
+              </p>
+              <p>
+                High Quality Inspection of PCB-Printed Circuit Boards (PCBs) and semiconductor devices is incomplete without Microscopes.
+              </p>
+            </div>
+            <div className="lg:w-1/2 flex flex-col">
+              <div className="bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center flex-grow min-h-[400px]">
+                <img src="/metallurgical/metallurgical-2.jpg" loading="lazy" decoding="async" className="max-h-[480px] max-w-full object-contain" alt="Inverted Research Metallurgical | Metallographic Microscope" />
+              </div>
+              <p className="text-[16px] font-semibold text-slate-700 text-center leading-snug mt-5">Inverted Research Metallurgical | Metallographic Microscope</p>
+            </div>
+          </section>
+        </div>
+      </main>
+    </>
+  );
+}
+
+// ---------------------------------------------------------
+// 5A-5. SOLUTIONS - SPECIAL PURPOSE SYSTEMS
+// ---------------------------------------------------------
+function SpecialPurposeSystemsContent({ currentPage }) {
+  usePageScroll(currentPage);
+  return (
+    <>
+      <section className="sticky top-0 h-screen w-full flex flex-col justify-center bg-black text-white relative overflow-hidden pt-32 z-0">
+        <div className="absolute inset-0 bg-black/80 mix-blend-overlay z-0"></div>
+        <img src={IMAGES.microscopy} onError={handleImageError} className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-luminosity" alt="Special Purpose Systems" />
+        <div className="px-[3%] w-full relative z-10">
+        <div className="max-w-6xl w-full reveal-on-scroll">
+          <p className="text-[14px] font-bold tracking-widest text-amber-400 uppercase mb-4">PRODUCTS</p>
+          <h1 className="text-5xl md:text-[72px] font-bold tracking-tight uppercase leading-[1] mb-6 text-white">
+            SPECIAL PURPOSE <span className="font-light text-emerald-300">SYSTEMS</span>
+          </h1>
+          <p className="text-emerald-100 font-light text-[17px] max-w-2xl border-l-2 border-amber-500 pl-4">
+            Purpose-built optical systems for industrial inspection, forensic comparison, and digital viewing.
+          </p>
+        </div>
+        </div>
+      </section>
+
+      <main className="relative z-10 bg-emerald-50 rounded-t-xl shadow-[0_-20px_50px_rgba(0,0,0,0.1)] py-[10vh]">
+        <div className="max-w-[1440px] mx-auto px-[3%]">
+
+          <section className="reveal-on-scroll flex flex-col items-center">
+            <div className="bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center min-h-[400px] max-w-2xl w-full">
+              <img src="/special-purpose/special-3.jpg" loading="lazy" decoding="async" className="max-h-[480px] max-w-full object-contain" alt="Industrial Inspection Microscope suitable for Silicon Wafer Inspection" />
+            </div>
+            <p className="text-[16px] font-semibold text-slate-700 text-center leading-snug mt-5 max-w-2xl">Industrial Inspection Microscope suitable for Silicon Wafer Inspection</p>
+          </section>
+
+          <section className="reveal-on-scroll mt-20 border-t border-emerald-200 pt-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-5">
+              <div className="bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center min-h-[380px]">
+                <img src="/special-purpose/special-1.jpg" loading="lazy" decoding="async" className="max-h-[420px] max-w-full object-contain" alt="Comparison Microscope" />
+              </div>
+              <div className="bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center min-h-[380px]">
+                <img src="/special-purpose/special-2.jpg" loading="lazy" decoding="async" className="max-h-[420px] max-w-full object-contain" alt="Comparison Microscope" />
+              </div>
+            </div>
+            <p className="text-[16px] font-semibold text-slate-700 text-center leading-snug">Comparison Microscope</p>
+          </section>
+
+          <section className="reveal-on-scroll mt-20 border-t border-emerald-200 pt-16">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-5">
+              <div className="bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center min-h-[300px]">
+                <img src="/special-purpose/special-8.jpg" loading="lazy" decoding="async" className="max-h-[260px] max-w-full object-contain" alt="Digital Macroscope & Display Systems" />
+              </div>
+              <div className="bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center min-h-[300px]">
+                <img src="/special-purpose/special-9.jpg" loading="lazy" decoding="async" className="max-h-[260px] max-w-full object-contain" alt="Digital Macroscope & Display Systems" />
+              </div>
+              <div className="bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center min-h-[300px]">
+                <img src="/special-purpose/special-10.jpg" loading="lazy" decoding="async" className="max-h-[260px] max-w-full object-contain" alt="Digital Macroscope & Display Systems" />
+              </div>
+            </div>
+            <p className="text-[16px] font-semibold text-slate-700 text-center leading-snug">Digital Macroscope & Display Systems</p>
+          </section>
+
+          <section className="reveal-on-scroll mt-20 border-t border-emerald-200 pt-16 flex flex-col items-center">
+            <div className="bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center min-h-[400px] max-w-2xl w-full">
+              <img src="/special-purpose/special-11.png" loading="lazy" decoding="async" className="max-h-[480px] max-w-full object-contain" alt="Micro Hardness Tester" />
+            </div>
+            <p className="text-[16px] font-semibold text-slate-700 text-center leading-snug mt-5 max-w-2xl">Micro Hardness Tester</p>
+          </section>
+
+          <section className="reveal-on-scroll mt-20 border-t border-emerald-200 pt-16 flex flex-col items-center">
+            <div className="bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center min-h-[380px] max-w-4xl w-full">
+              <img src="/special-purpose/special-12.png" loading="lazy" decoding="async" className="max-h-[420px] max-w-full object-contain" alt="Particle Size Analysis" />
+            </div>
+            <p className="text-[16px] font-semibold text-slate-700 text-center leading-snug mt-5 max-w-2xl">Particle Size Analysis</p>
+          </section>
+
+          <section className="reveal-on-scroll mt-20 border-t border-emerald-200 pt-16 flex flex-col items-center">
+            <div className="bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center min-h-[280px] max-w-4xl w-full">
+              <img src="/special-purpose/special-13.png" loading="lazy" decoding="async" className="max-h-[320px] max-w-full object-contain" alt="Sample preparation and Image Analysis applications" />
+            </div>
+          </section>
+
         </div>
       </main>
     </>
