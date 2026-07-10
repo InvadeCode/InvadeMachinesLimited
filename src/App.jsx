@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Microscope, Camera, ScanLine, Eye, Aperture, Cpu, Database, ArrowRight, ArrowUpRight, 
+  Microscope, Camera, ScanLine, Eye, Aperture, Cpu, Database, ArrowRight,
   MapPin, Menu, X, Globe2, Activity, ChevronDown, Layers, BarChart3, Network, ShieldCheck,
   Zap, Focus, MonitorPlay, Binary, Microchip, Beaker, TestTube2, Settings, Mail,
-  Phone, Building, FileText, PieChart, ChevronRight, Briefcase, Search, Lightbulb, ShieldAlert, Code2,
-  CheckCircle2
+  Phone, Building, FileText, PieChart, ChevronRight, Briefcase, Search, Lightbulb, ShieldAlert,
+  CheckCircle2,
+  Box, Cog, Clock, Crosshair, Users, BookOpen, Headphones, Truck, Wrench, Shield, Key,
+  ZapOff, Thermometer, Anchor, Target, Sun, FileQuestion, Calendar
 } from 'lucide-react';
+const Bot = Cpu;
 
 // ---------------------------------------------------------
 // IMAGE DICTIONARY & ASSETS
@@ -26,7 +29,19 @@ const IMAGES = {
   applicationsHero: "https://images.unsplash.com/photo-1713371398479-4410ca153b1f?auto=format&fit=crop&w=1600&q=80",
   logo: "https://static.wixstatic.com/media/548938_9affdac24a7542fa808fa917c71400da~mv2.png",
   founder: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80",
-  integration: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1600&q=80"
+  integration: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1600&q=80",
+  coffee: "https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&w=1600&q=80",
+  water: "https://images.unsplash.com/photo-1548839140-29a749e1bc4e?auto=format&fit=crop&w=1600&q=80",
+  oliveOil: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=1600&q=80",
+  silos: "https://images.unsplash.com/photo-1588667508496-e17f09f069f1?auto=format&fit=crop&w=1600&q=80",
+  agro: "https://images.unsplash.com/photo-1592982537447-6f2b6c0c2912?auto=format&fit=crop&w=1600&q=80",
+  agroGrapes: "https://images.unsplash.com/photo-1596328546171-77e37b5fefea?auto=format&fit=crop&w=800&q=80",
+  agroCitrus: "https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?auto=format&fit=crop&w=800&q=80",
+  agroSugarcane: "https://images.unsplash.com/photo-1625698457101-fec2f565a8f0?auto=format&fit=crop&w=800&q=80",
+  agroSeed: "https://images.unsplash.com/photo-1588614959060-4d144f28b207?auto=format&fit=crop&w=800&q=80",
+  agroCrop: "https://images.unsplash.com/photo-1586771107445-d3afbf0a6ddb?auto=format&fit=crop&w=800&q=80",
+  agroCotton: "https://images.unsplash.com/photo-1605000797499-95a51c5269ae?auto=format&fit=crop&w=800&q=80",
+  agroAsbestos: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=800&q=80"
 };
 
 // ---------------------------------------------------------
@@ -74,9 +89,9 @@ function NavDropdownItems({ items, setCurrentPage, depth = 0 }) {
     <div key={item.label} className={`relative ${groupNames[depth % 3]}`}>
       <button
         onClick={() => setCurrentPage(item.id)}
-        className="w-full flex items-center justify-between gap-3 text-left px-4 py-3 text-[11px] text-emerald-100 hover:bg-emerald-900 hover:text-amber-400 rounded-xl transition-colors tracking-widest uppercase font-normal whitespace-nowrap"
+        className="w-full flex items-center justify-between gap-3 text-left px-4 py-3 text-[11px] text-emerald-100 hover:bg-emerald-900 hover:text-amber-400 rounded-xl transition-colors tracking-widest uppercase font-normal"
       >
-        {item.label}
+        <span>{item.label}</span>
         {item.submenu && <ChevronRight size={13} className="opacity-70 flex-shrink-0 rotate-180" />}
       </button>
       {item.submenu && (
@@ -207,11 +222,17 @@ export default function App() {
             }
           ]
         },
+        { label: 'SPMs & Robotics', id: 'spms' },
         { label: 'Special Purpose Systems', id: 'special-purpose-systems' },
-        { label: 'Digital Cameras', id: 'cameras' },
-        { label: 'Machine Vision', id: 'machine-vision' }
+        { label: 'Machine Vision', id: 'machine-vision' },
+        { label: 'Digital Cameras & Inspection Systems', id: 'cameras' },
+        { label: 'Coffee Inspection', id: 'coffee' },
+        { label: 'Sparkling Water QA', id: 'sparkling-water' },
+        { label: 'Olive Oil Grading', id: 'olive-oil' },
+        { label: 'Silos Automation', id: 'silos' }
       ]
     },
+    { label: 'Agro Research', id: 'agro-research' },
     { label: 'Applications', id: 'applications' },
     { label: 'Clients', id: 'clients' },
     { label: 'Contact', id: 'contact' },
@@ -326,12 +347,18 @@ export default function App() {
         {currentPage === 'phase-contrast' && <PhaseContrastContent setPage={setCurrentPage} currentPage={currentPage} />}
         {currentPage === 'biological-microscopes' && <BiologicalMicroscopesContent setPage={setCurrentPage} currentPage={currentPage} />}
         {currentPage === 'metallurgical-microscopes' && <MetallurgicalMicroscopesContent setPage={setCurrentPage} currentPage={currentPage} />}
+        {currentPage === 'spms' && <SpmsContent setPage={setCurrentPage} currentPage={currentPage} />}
         {currentPage === 'special-purpose-systems' && <SpecialPurposeSystemsContent setPage={setCurrentPage} currentPage={currentPage} />}
         {currentPage === 'cameras' && <CamerasContent setPage={setCurrentPage} currentPage={currentPage} />}
         {currentPage === 'machine-vision' && <MachineVisionContent setPage={setCurrentPage} currentPage={currentPage} />}
         {currentPage === 'applications' && <ApplicationsContent setPage={setCurrentPage} currentPage={currentPage} />}
         {currentPage === 'clients' && <ClientsContent setPage={setCurrentPage} currentPage={currentPage} />}
         {currentPage === 'contact' && <ContactContent setPage={setCurrentPage} currentPage={currentPage} />}
+        {currentPage === 'coffee' && <CoffeeContent setPage={setCurrentPage} currentPage={currentPage} />}
+        {currentPage === 'sparkling-water' && <SparklingWaterContent setPage={setCurrentPage} currentPage={currentPage} />}
+        {currentPage === 'olive-oil' && <OliveOilContent setPage={setCurrentPage} currentPage={currentPage} />}
+        {currentPage === 'silos' && <SilosContent setPage={setCurrentPage} currentPage={currentPage} />}
+        {currentPage === 'agro-research' && <AgroResearchContent setPage={setCurrentPage} currentPage={currentPage} />}
       </div>
 
       {/* Global Footer */}
@@ -365,21 +392,20 @@ export default function App() {
           <div className="lg:col-span-4 lg:pt-6 grid grid-cols-2 gap-6">
              <div>
                 <h4 className="text-[12px] font-bold tracking-widest uppercase text-amber-500 mb-6">Solutions</h4>
-                <ul className="space-y-4 text-[14px] text-emerald-200/70 font-light">
-                  <li><button onClick={() => setCurrentPage('microscopy')} className="hover:text-amber-400 transition-colors">Microscopy & IVF</button></li>
-                  <li><button onClick={() => setCurrentPage('cameras')} className="hover:text-amber-400 transition-colors">Digital Cameras</button></li>
-                  <li><button onClick={() => setCurrentPage('machine-vision')} className="hover:text-amber-400 transition-colors">Machine Vision</button></li>
-                  <li><button onClick={() => setCurrentPage('applications')} className="hover:text-amber-400 transition-colors">Industries</button></li>
-                </ul>
+                 <ul className="space-y-4 text-[14px] text-emerald-200/70 font-light flex flex-col items-start">
+                  <li><button onClick={() => setCurrentPage('microscopy')} className="text-left hover:text-amber-400 transition-colors">Microscopy & IVF</button></li>
+                  <li><button onClick={() => setCurrentPage('cameras')} className="text-left hover:text-amber-400 transition-colors">Digital Cameras & Inspection Systems</button></li>
+                  <li><button onClick={() => setCurrentPage('applications')} className="text-left hover:text-amber-400 transition-colors">Industries</button></li>
+                 </ul>
              </div>
              <div>
                 <h4 className="text-[12px] font-bold tracking-widest uppercase text-amber-500 mb-6">Company</h4>
-                <ul className="space-y-4 text-[14px] text-emerald-200/70 font-light">
-                 <li><button onClick={() => setCurrentPage('about')} className="hover:text-amber-400 transition-colors">Our Vision</button></li>
-                 <li><button onClick={() => setCurrentPage('team')} className="hover:text-amber-400 transition-colors">Leadership</button></li>
-                 <li><button onClick={() => setCurrentPage('clients')} className="hover:text-amber-400 transition-colors">Success Stories</button></li>
-                 <li><button onClick={() => setCurrentPage('contact')} className="hover:text-amber-400 transition-colors">Contact</button></li>
-                </ul>
+                 <ul className="space-y-4 text-[14px] text-emerald-200/70 font-light flex flex-col items-start">
+                 <li><button onClick={() => setCurrentPage('about')} className="text-left hover:text-amber-400 transition-colors">Our Vision</button></li>
+                 <li><button onClick={() => setCurrentPage('team')} className="text-left hover:text-amber-400 transition-colors">Leadership</button></li>
+                 <li><button onClick={() => setCurrentPage('clients')} className="text-left hover:text-amber-400 transition-colors">Success Stories</button></li>
+                 <li><button onClick={() => setCurrentPage('contact')} className="text-left hover:text-amber-400 transition-colors">Contact</button></li>
+                 </ul>
              </div>
           </div>
 
@@ -439,12 +465,15 @@ function HomeContent({ setPage, currentPage }) {
             <div className="w-2.5 h-2.5 bg-amber-400 rounded-sm shadow-[0_0_12px_#fbbf24] animate-pulse"></div>
             <p className="text-[14px] font-semibold tracking-[0.3em] uppercase text-white">Welcome to Invade Machines</p>
           </div>
-          <h1 className="text-5xl md:text-7xl lg:text-[8rem] font-bold tracking-tighter mb-6 text-white uppercase reveal-on-scroll visible leading-[1]">
-            SEEING IS <br />
-            <span className="font-light text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-amber-300 drop-shadow-2xl">BELIEVING</span>
+          <h1 className="text-5xl md:text-7xl lg:text-[8rem] font-bold tracking-tighter mb-6 text-white uppercase reveal-on-scroll visible leading-[1] inline-flex flex-col">
+            <span>ENGINEERED</span>
+            <span className="flex items-center justify-between w-full mt-2">
+              <span className="text-white font-bold">TO</span>
+              <span className="font-black tracking-wide pr-2 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-amber-400 to-amber-500 drop-shadow-[0_0_25px_rgba(251,191,36,0.3)]">OUTSEE</span>
+            </span>
           </h1>
           <p className="text-[17px] font-light text-emerald-50 max-w-3xl leading-relaxed mb-10 reveal-on-scroll visible" style={{transitionDelay: '0.2s'}}>
-            Empowering research, life sciences, and industrial manufacturing with world-class optical solutions. From sub-micron IVF microscopy to high-speed automated machine vision.
+            Where human capability ends, Invade Machines begins. Deploying unparalleled optical hardware and AI inference for absolute industrial control.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-start gap-6 w-full reveal-on-scroll visible" style={{transitionDelay: '0.3s'}}>
             <button onClick={() => setPage('products-overview')} className="w-full sm:w-auto bg-amber-500 text-emerald-950 px-10 py-4 text-[12px] font-bold tracking-[0.2em] uppercase rounded-xl hover:bg-white hover:text-emerald-900 transition-all shadow-[0_0_30px_rgba(245,158,11,0.4)]">
@@ -475,12 +504,11 @@ function HomeContent({ setPage, currentPage }) {
                </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1440px] mx-auto">
+            <div className="grid md:grid-cols-3 gap-6 max-w-[1440px] mx-auto">
               {[ 
                 {icon: Microscope, title: "Stereo Microscopes", desc: "Large FOV & Long working distance with Ring, Goose Neck & Spot lighting.", route: 'microscopy'},
                 {icon: Beaker, title: "Compound Microscopes", desc: "Upright & Inverted systems with Phase Contrast, Dark Field & DIC.", route: 'microscopy'},
-                {icon: Camera, title: "Digital Cameras", desc: "USB2/3, Cooled CMOS & Smart Cameras capturing data at the edge.", route: 'cameras'},
-                {icon: ScanLine, title: "Industrial Vision", desc: "Print inspection, Measurement, Sorting & Colour registration.", route: 'machine-vision'} 
+                {icon: Camera, title: "Digital Cameras & Inspection Systems", desc: "USB2/3, Cooled CMOS & Smart Cameras capturing data at the edge.", route: 'cameras'}
               ].map((item, i) => (
                 <div key={i} onClick={() => setPage(item.route)} className="p-8 bg-neutral-50 rounded-xl border-2 border-slate-300 shadow-lg hover:border-emerald-300 hover:shadow-xl transition-all group cursor-pointer hover:-translate-y-2 flex flex-col h-full">
                   <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center mb-6 border border-black/5 group-hover:bg-emerald-600 transition-colors shadow-sm text-emerald-600 group-hover:text-white flex-shrink-0">
@@ -555,6 +583,57 @@ function HomeContent({ setPage, currentPage }) {
           </div>
         </section>
 
+        {/* Proprietary Logic Core & HMI Dashboard */}
+        <section className="px-[3%] w-full py-[12vh] bg-neutral-900 text-white relative overflow-hidden">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(52,211,153,0.05)_0%,transparent_70%)]"></div>
+          <div className="max-w-[1440px] mx-auto w-full reveal-on-scroll flex flex-col lg:flex-row gap-16 items-center relative z-10">
+            <div className="lg:w-1/2">
+              <p className="text-[14px] font-bold tracking-widest text-amber-500 uppercase mb-4">Proprietary Logic Core</p>
+              <h2 className="text-4xl md:text-5xl font-light tracking-tighter uppercase leading-[1.1] mb-6 text-white">
+                POWERED BY <span className="font-bold text-emerald-400">PIXELR™</span>
+              </h2>
+              <p className="text-emerald-100/70 font-light text-[17px] leading-relaxed mb-6">
+                Hardware is only half the equation. Our proprietary Pixelr Vision Architecture translates complex optical data into binary "Pass/Fail" actuation signals in under 1 millisecond.
+              </p>
+              <ul className="space-y-4 mb-8">
+                {[
+                  "Hardware-Agnostic Integration (GigE, USB3, CameraLink)",
+                  "Sub-pixel Edge Detection & Pattern Matching",
+                  "FDA 21 CFR Part 11 Compliant Audit Trails",
+                  "Deep Learning & AI Inference Modules"
+                ].map((feature, i) => (
+                  <li key={i} className="flex items-center gap-4 text-emerald-100 font-light text-[15px]">
+                    <span className="w-2 h-2 rounded-full bg-amber-500 flex-shrink-0"></span>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <button onClick={() => setPage('machine-vision')} className="text-[11px] font-bold tracking-widest uppercase text-emerald-400 hover:text-white transition-colors flex items-center gap-2 border-b border-emerald-400 pb-1 w-fit">
+                Explore Vision Capabilities <ArrowRight size={14} />
+              </button>
+            </div>
+            
+            <div className="lg:w-1/2 w-full h-[350px] lg:h-[450px] relative rounded-xl overflow-hidden shadow-[0_0_50px_rgba(52,211,153,0.15)] border border-white/10 group">
+              <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=1600&q=80" loading="lazy" decoding="async" className="w-full h-full object-cover mix-blend-luminosity opacity-80 group-hover:scale-105 transition-transform duration-700" alt="Pixelr Vision Analytics" />
+              <div className="absolute inset-0 bg-gradient-to-t from-emerald-950/90 via-emerald-950/20 to-transparent"></div>
+              
+              <div className="absolute bottom-6 left-6 right-6 flex items-end justify-between">
+                <div>
+                  <div className="flex items-center gap-2 mb-2">
+                     <span className="w-2 h-2 rounded-full bg-amber-500 animate-ping"></span>
+                     <span className="text-[10px] font-bold tracking-widest text-emerald-400 uppercase">Live Data Processing</span>
+                  </div>
+                  <h3 className="text-2xl font-light text-white">Neural Network <br/><span className="font-bold">Inference</span></h3>
+                </div>
+                <div className="text-right">
+                  <p className="text-[10px] font-bold tracking-widest text-white/50 uppercase mb-1">Actuation Latency</p>
+                  <p className="text-3xl font-mono text-emerald-300 font-bold">0.8<span className="text-lg text-emerald-500">ms</span></p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* --- SECTION 1: IMPACT METRICS --- */}
         <section className="px-[3%] w-full py-[12vh] bg-emerald-950 text-white relative overflow-hidden">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-emerald-900 rounded-xl blur-[150px] opacity-30 pointer-events-none"></div>
@@ -576,6 +655,89 @@ function HomeContent({ setPage, currentPage }) {
                 <h3 className="text-5xl lg:text-7xl font-light text-amber-500 mb-4">0</h3>
                 <p className="text-[12px] font-bold tracking-widest uppercase text-emerald-300">Defect Tolerance</p>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Cost Recovery & ROI */}
+        <section className="px-[3%] w-full py-[12vh] bg-white relative overflow-hidden border-b border-black/5">
+          <div className="max-w-[1440px] mx-auto w-full reveal-on-scroll flex flex-col lg:flex-row gap-16 items-center">
+            <div className="lg:w-1/2 order-2 lg:order-1">
+              <div className="bg-neutral-50 rounded-xl p-8 border-2 border-slate-300 shadow-lg relative">
+                <div className="flex justify-between items-end mb-6 border-b border-black/10 pb-4">
+                  <div>
+                     <p className="text-[10px] font-bold tracking-widest text-emerald-600 uppercase mb-1">Financial Impact</p>
+                     <p className="text-xl font-medium text-emerald-950">Cost Recovery Curve</p>
+                  </div>
+                  <div className="text-right">
+                     <p className="text-3xl font-light text-amber-500 mb-1">11.4</p>
+                     <p className="text-[10px] font-bold tracking-widest text-emerald-600 uppercase">Months to ROI</p>
+                  </div>
+                </div>
+                
+                {/* Mock Graph */}
+                <div className="h-48 relative flex items-end justify-between pt-4">
+                  <div className="absolute bottom-10 left-0 w-full h-[1px] bg-black/10 border-dashed border-t"></div>
+                  <div className="absolute bottom-20 left-0 w-full h-[1px] bg-black/10 border-dashed border-t"></div>
+                  
+                  {/* Bars */}
+                  {[
+                    { month: 'Q1', value: 30, color: 'bg-rose-400' },
+                    { month: 'Q2', value: 50, color: 'bg-amber-400' },
+                    { month: 'Q3', value: 80, color: 'bg-emerald-300' },
+                    { month: 'Q4', value: 120, color: 'bg-emerald-500' },
+                  ].map((data, i) => (
+                    <div key={i} className="flex flex-col items-center z-10 w-1/4">
+                       <div className={`w-8 md:w-12 rounded-t-sm ${data.color} transition-all duration-1000`} style={{ height: `${data.value}%` }}></div>
+                       <span className="text-[10px] font-bold text-black/40 mt-2">{data.month}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+            <div className="lg:w-1/2 order-1 lg:order-2">
+              <p className="text-[14px] font-bold tracking-widest text-amber-500 uppercase mb-4">Capital Expenditure</p>
+              <h2 className="text-4xl md:text-5xl font-light tracking-tighter uppercase leading-[1.1] mb-6 text-emerald-950">
+                A GUARANTEED <span className="font-bold text-emerald-800">RETURN</span>
+              </h2>
+              <p className="text-black/60 font-light text-[17px] leading-relaxed mb-6">
+                Machine vision is not an expense; it is a rapid-return investment. By eliminating manual QA labour, preventing costly product recalls, and increasing overall line speed, the system pays for itself within the first year of operation.
+              </p>
+              <ul className="space-y-3 mb-8 text-[14px] font-medium text-emerald-950">
+                <li className="flex items-center gap-3"><span className="w-2 h-2 rounded-full bg-emerald-500"></span> Zero Product Recalls</li>
+                <li className="flex items-center gap-3"><span className="w-2 h-2 rounded-full bg-emerald-500"></span> Reduced QA Labor Overhead</li>
+                <li className="flex items-center gap-3"><span className="w-2 h-2 rounded-full bg-emerald-500"></span> Uncapped Line Speeds</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        {/* Operator Empowerment */}
+        <section className="px-[3%] w-full py-[12vh] bg-emerald-50 relative overflow-hidden">
+          <div className="max-w-[1440px] mx-auto w-full reveal-on-scroll flex flex-col lg:flex-row gap-16 items-center">
+            <div className="lg:w-1/2">
+              <p className="text-[14px] font-bold tracking-widest text-emerald-600 uppercase mb-4">Human-Centric Design</p>
+              <h2 className="text-4xl md:text-5xl font-light tracking-tighter uppercase leading-[1.1] mb-6 text-emerald-950">
+                EMPOWERING <span className="font-bold text-emerald-800">YOUR TEAM</span>
+              </h2>
+              <p className="text-black/60 font-light text-[17px] leading-relaxed mb-6">
+                We do not just install complex black boxes. Our intuitive HMI touch-panels are designed for the shop floor, allowing your existing operators to train new inspection models, adjust tolerances, and pull compliance reports without writing a single line of code.
+              </p>
+              <button onClick={() => setPage('contact')} className="text-[11px] font-bold tracking-widest uppercase text-emerald-600 hover:text-emerald-950 transition-colors flex items-center gap-2 border-b border-emerald-600 pb-1 w-fit">
+                Book a Software Demo <ArrowRight size={14} />
+              </button>
+            </div>
+            <div className="lg:w-1/2 grid grid-cols-2 gap-4">
+               <div className="bg-white p-8 rounded-xl shadow-lg border border-slate-200">
+                  <MonitorPlay size={32} className="text-emerald-500 mb-4" />
+                  <h4 className="font-bold text-emerald-950 mb-2">No-Code Training</h4>
+                  <p className="text-[13px] text-black/60 leading-relaxed">Train new defects by simply highlighting them on the touch-screen.</p>
+               </div>
+               <div className="bg-white p-8 rounded-xl shadow-lg border border-slate-200 mt-8">
+                  <FileText size={32} className="text-amber-500 mb-4" />
+                  <h4 className="font-bold text-emerald-950 mb-2">1-Click Reporting</h4>
+                  <p className="text-[13px] text-black/60 leading-relaxed">Generate PDF compliance reports for auditors instantly.</p>
+               </div>
             </div>
           </div>
         </section>
@@ -699,6 +861,19 @@ function HomeContent({ setPage, currentPage }) {
                 </div>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Compliance & Certifications Bar */}
+        <section className="px-[3%] w-full py-8 bg-emerald-950 border-t border-white/5 relative overflow-hidden">
+          <div className="max-w-[1440px] mx-auto w-full reveal-on-scroll flex flex-col md:flex-row items-center justify-between gap-6">
+             <p className="text-[11px] font-bold tracking-widest uppercase text-emerald-400">Industrial Compliance & Safety Standards</p>
+             <div className="flex flex-wrap justify-center md:justify-end gap-8 md:gap-12 opacity-60 text-white font-medium text-sm tracking-widest">
+               <span className="flex items-center gap-2"><ShieldCheck size={16} className="text-amber-500" /> CE CERTIFIED</span>
+               <span className="flex items-center gap-2"><ShieldCheck size={16} className="text-amber-500" /> ISO 9001:2015</span>
+               <span className="flex items-center gap-2"><ShieldCheck size={16} className="text-amber-500" /> FDA 21 CFR 11</span>
+               <span className="flex items-center gap-2"><ShieldCheck size={16} className="text-amber-500" /> IP67 RATED</span>
+             </div>
           </div>
         </section>
 
@@ -1055,11 +1230,10 @@ function ProductsOverviewContent({ setPage, currentPage }) {
                 THE OPTICAL <span className="font-light">STACK</span>
               </h2>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch max-w-5xl mx-auto">
               {[
                 { id: 'microscopy', title: 'Microscopy & IVF', desc: 'Upright, Stereo, Fluorescence, and Inverted setups tailored for cellular and metallurgical analysis.', img: IMAGES.microscopy, icon: Microscope },
-                { id: 'cameras', title: 'Digital Cameras', desc: 'Smart cameras, High-Speed, and Cooled CMOS sensors capturing data at the edge.', img: IMAGES.digitalCameras, icon: Camera },
-                { id: 'machine-vision', title: 'Machine Vision', desc: 'Online inspection, color registration, and automated defect sorting directly on the assembly line.', img: IMAGES.machineVision, icon: ScanLine }
+                { id: 'cameras', title: 'Digital Cameras & Inspection Systems', desc: 'Smart cameras, High-Speed, and Cooled CMOS sensors capturing data at the edge.', img: IMAGES.digitalCameras, icon: Camera }
               ].map((item, i) => (
                 <div key={i} className="group bg-white rounded-xl overflow-hidden shadow-lg border-2 border-slate-300 hover:shadow-2xl transition-all duration-500 flex flex-col h-full cursor-pointer hover:border-amber-400 hover:-translate-y-2" onClick={() => setPage(item.id)}>
                   <div className="h-[260px] overflow-hidden relative flex-shrink-0">
@@ -1088,6 +1262,41 @@ function ProductsOverviewContent({ setPage, currentPage }) {
 // ---------------------------------------------------------
 // 5A. SOLUTIONS - MICROSCOPY & IVF
 // ---------------------------------------------------------
+
+function ProvenMicroscopySolutions() {
+  return (
+    <section className="reveal-on-scroll border-t border-emerald-200 pt-16 mt-16 px-[3%]">
+      <div className="max-w-[1440px] mx-auto pb-16">
+        <div className="text-center mb-12">
+          <p className="text-[14px] font-bold tracking-widest text-amber-500 uppercase mb-4">Trusted Across Sectors</p>
+          <h2 className="text-3xl md:text-4xl font-light tracking-tighter uppercase leading-[1.1] text-emerald-950">
+            PROVEN <span className="font-bold">SOLUTIONS FOR</span>
+          </h2>
+        </div>
+        
+        <div className="flex flex-wrap justify-center gap-4 max-w-[1000px] mx-auto">
+          {[
+            "Heart Stents",
+            "Industrial Filters",
+            "Pharma API",
+            "Petroleum & Oil Exploration",
+            "Virology",
+            "Packing Material QC",
+            "Defence",
+            "Space Application (ISRO)",
+            "IITs & Research Institutes"
+          ].map((app, i) => (
+            <div key={i} className="bg-white py-4 px-6 rounded-xl border-2 border-slate-200 flex items-center gap-3 shadow-sm hover:shadow-lg hover:border-amber-400 transition-all">
+              <CheckCircle2 size={18} className="text-emerald-600 flex-shrink-0" />
+              <span className="text-[14px] font-bold text-emerald-950 whitespace-nowrap">{app}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function MicroscopyContent({ setPage, currentPage }) {
   usePageScroll(currentPage);
   return (
@@ -1169,6 +1378,62 @@ function MicroscopyContent({ setPage, currentPage }) {
                     <li>• Metallurgical & Stem Cell analysis</li>
                   </ul>
                 </div>
+            </div>
+          </section>
+
+          {/* Specialized Techniques Section */}
+          <section className="reveal-on-scroll border-t border-emerald-200 pt-16">
+            <div className="text-center mb-16">
+              <p className="text-[14px] font-bold tracking-widest text-emerald-600 uppercase mb-4">Application Focus</p>
+              <h2 className="text-4xl md:text-5xl font-light tracking-tighter uppercase leading-[1.1] text-emerald-950">
+                SPECIALIZED <span className="font-bold">TECHNIQUES</span>
+              </h2>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[
+                { title: "Live Cell Imaging", desc: "CO2 incubation enclosures and motorized stages for long-term time-lapse cellular tracking without temperature shock.", icon: TestTube2 },
+                { title: "Metallography", desc: "Reflected light, DIC, and darkfield optics to evaluate grain boundaries, porosity, and phase distribution in alloys.", icon: Settings },
+                { title: "IVF Micro-manipulation", desc: "Anti-vibration setups with integrated heating stages and hydraulic micromanipulators for ICSI procedures.", icon: Focus },
+                { title: "Fluorescence", desc: "Multi-band LED excitation with custom bandpass filters to isolate specific fluorophores in neurobiology.", icon: Lightbulb },
+                { title: "Slide Scanning", desc: "Automated whole-slide digital scanning with Pixelr image stitching for digital pathology archives.", icon: ScanLine },
+                { title: "Gemology", desc: "Darkfield stands and polarization to inspect inclusions, clarity, and structural integrity of precious stones.", icon: Box }
+              ].map((tech, i) => (
+                <div key={i} className="bg-white p-8 rounded-xl border border-slate-200 shadow-sm hover:shadow-lg hover:border-emerald-300 transition-all flex flex-col items-start group">
+                  <tech.icon size={28} className="text-amber-500 mb-5 group-hover:-translate-y-1 transition-transform" />
+                  <h4 className="font-bold text-emerald-950 mb-3">{tech.title}</h4>
+                  <p className="text-[13px] text-black/60 leading-relaxed font-light">{tech.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Proven Solutions Section */}
+          <section className="reveal-on-scroll border-t border-emerald-200 pt-16 mt-16">
+            <div className="text-center mb-12">
+              <p className="text-[14px] font-bold tracking-widest text-amber-500 uppercase mb-4">Trusted Across Sectors</p>
+              <h2 className="text-3xl md:text-4xl font-light tracking-tighter uppercase leading-[1.1] text-emerald-950">
+                PROVEN <span className="font-bold">SOLUTIONS FOR</span>
+              </h2>
+            </div>
+            
+            <div className="flex flex-wrap justify-center gap-4 max-w-[1000px] mx-auto">
+              {[
+                "Heart Stents",
+                "Industrial Filters",
+                "Pharma API",
+                "Petroleum & Oil Exploration",
+                "Virology",
+                "Packing Material QC",
+                "Defence",
+                "Space Application (ISRO)",
+                "IITs & Research Institutes"
+              ].map((app, i) => (
+                <div key={i} className="bg-white py-4 px-6 rounded-xl border-2 border-slate-200 flex items-center gap-3 shadow-sm hover:shadow-lg hover:border-amber-400 transition-all">
+                  <CheckCircle2 size={18} className="text-emerald-600 flex-shrink-0" />
+                  <span className="text-[14px] font-bold text-emerald-950 whitespace-nowrap">{app}</span>
+                </div>
+              ))}
             </div>
           </section>
 
@@ -1306,6 +1571,8 @@ function StereoMicroscopesContent({ currentPage }) {
               ))}
             </div>
           </section>
+
+          <ProvenMicroscopySolutions />
         </div>
       </main>
     </>
@@ -1417,6 +1684,8 @@ function PhaseContrastContent({ currentPage }) {
               </div>
             </div>
           </section>
+
+          <ProvenMicroscopySolutions />
         </div>
       </main>
     </>
@@ -1539,6 +1808,8 @@ function BiologicalMicroscopesContent({ currentPage }) {
               </div>
             </div>
           </section>
+
+          <ProvenMicroscopySolutions />
         </div>
       </main>
     </>
@@ -1623,7 +1894,117 @@ function MetallurgicalMicroscopesContent({ currentPage }) {
               <p className="text-[16px] font-semibold text-slate-700 text-center leading-snug mt-5">Inverted Research Metallurgical | Metallographic Microscope</p>
             </div>
           </section>
+
+          <ProvenMicroscopySolutions />
         </div>
+      </main>
+    </>
+  );
+}
+
+// ---------------------------------------------------------
+// 5A-4. SOLUTIONS - SPMs & ROBOTICS
+// ---------------------------------------------------------
+function SpmsContent({ setPage, currentPage }) {
+  usePageScroll(currentPage);
+  return (
+    <>
+      <section className="sticky top-0 h-screen w-full flex flex-col justify-center bg-black text-white relative overflow-hidden pt-32 z-0">
+        <div className="absolute inset-0 bg-black/80 mix-blend-overlay z-0"></div>
+        <img src={IMAGES.manufacturing} onError={handleImageError} className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-luminosity" alt="SPMs & Robotics" />
+        <div className="px-[3%] w-full relative z-10">
+        <div className="max-w-6xl w-full reveal-on-scroll">
+          <p className="text-[14px] font-bold tracking-[0.25em] text-amber-400 uppercase mb-4">DIVISION 02</p>
+          <h1 className="text-5xl md:text-[72px] font-bold tracking-tight uppercase leading-[1] mb-6 text-white">
+            SPMs & <span className="font-light text-emerald-300">ROBOTICS</span>
+          </h1>
+          <p className="text-emerald-100 font-light text-[17px] max-w-2xl border-l-2 border-amber-500 pl-4">
+            Custom-engineered Special Purpose Machines bridging the gap between advanced vision logic and high-speed robotic actuation.
+          </p>
+        </div>
+        </div>
+      </section>
+
+      <main className="relative z-10 bg-white rounded-t-xl shadow-[0_-20px_50px_rgba(0,0,0,0.1)]">
+        
+        {/* Intro Section */}
+        <section className="px-[3%] w-full py-[12vh] bg-emerald-50 relative overflow-hidden">
+          <div className="max-w-[1440px] mx-auto w-full reveal-on-scroll">
+            <div className="text-center mb-16 max-w-4xl mx-auto">
+              <p className="text-[14px] font-bold tracking-widest text-emerald-600 uppercase mb-4">Engineering Capabilities</p>
+              <h2 className="text-4xl md:text-5xl font-light tracking-tighter uppercase leading-[1.1] mb-6 text-emerald-950">
+                END-TO-END <span className="font-medium text-emerald-800">AUTOMATION</span>
+              </h2>
+              <p className="text-black/60 font-light text-[17px] leading-relaxed">
+                When off-the-shelf conveyors and standard mounts fail to meet precision requirements, we build the machine from the ground up. Our SPM division designs, fabricates, and programs complete mechanical environments for our vision systems.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* 6-Step Process */}
+        <section className="px-[3%] w-full py-[12vh] lg:py-[15vh] bg-white relative overflow-hidden">
+          <div className="max-w-[1440px] mx-auto w-full reveal-on-scroll">
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {[
+                { step: '01', icon: Lightbulb, title: 'Conceptualization', desc: 'Analyzing payloads, line speeds, and factory floor constraints. Formulating mechanical kinematics and vision feasibility.' },
+                { step: '02', icon: Box, title: '3D Mechanical Design', desc: 'Complete SolidWorks modeling of rigid frames, vibration-dampening mounts, custom conveyors, and optical enclosures.' },
+                { step: '03', icon: Microchip, title: 'Control Architecture', desc: 'Programming PLC logic, servo drives, safety interlocks, and SCADA handshakes for seamless factory integration.' },
+                { step: '04', icon: Eye, title: 'Vision Integration', desc: 'Deploying the exact lenses, synchronized strobe controllers, and GigE cameras into the mechanical framework.' },
+                { step: '05', icon: Cog, title: 'Assembly & Actuation', desc: 'Wiring high-speed pneumatic drop-gates, flippers, or multi-axis robotic pick-and-place arms for physical rejection.' },
+                { step: '06', icon: ShieldCheck, title: 'Factory Acceptance (FAT)', desc: 'Rigorous high-speed trial runs under continuous load, complete with FDA 21 CFR Part 11 documentation packages.' }
+              ].map((phase, i) => (
+                <div key={i} className="bg-neutral-50 p-10 rounded-xl shadow-lg border-2 border-slate-300 relative group hover:border-emerald-400 hover:shadow-xl transition-all duration-300">
+                  <div className="absolute top-0 right-0 bg-emerald-950 text-amber-500 font-black text-xl px-4 py-2 rounded-bl-xl rounded-tr-lg opacity-80 group-hover:opacity-100 transition-opacity">
+                    {phase.step}
+                  </div>
+                  <div className="w-16 h-16 bg-white rounded-xl flex items-center justify-center mb-6 text-emerald-600 border border-black/5 shadow-sm group-hover:-translate-y-2 transition-transform">
+                    <phase.icon size={32} strokeWidth={1.5} />
+                  </div>
+                  <h3 className="text-xl font-bold mb-4 text-emerald-950">{phase.title}</h3>
+                  <p className="text-[15px] font-light text-black/60 leading-relaxed">{phase.desc}</p>
+                </div>
+              ))}
+            </div>
+
+          </div>
+        </section>
+
+        {/* Real-World Application */}
+        <section className="px-[3%] w-full py-[12vh] bg-emerald-950 text-white relative overflow-hidden">
+          <div className="max-w-[1440px] mx-auto w-full reveal-on-scroll flex flex-col lg:flex-row gap-16 items-center">
+             <div className="lg:w-1/2">
+                <p className="text-[14px] font-bold tracking-widest text-amber-500 uppercase mb-4">Case in Point</p>
+                <h3 className="text-3xl md:text-5xl font-light tracking-tighter uppercase mb-6">High-Speed <br/><span className="font-bold">Sorting Systems</span></h3>
+                <p className="text-emerald-100/80 font-light text-[17px] leading-relaxed mb-6">
+                  A recent deployment required sorting thousands of automotive fasteners per minute based on micron-level dimensional deviations.
+                </p>
+                <p className="text-emerald-100/80 font-light text-[17px] leading-relaxed mb-8">
+                  We engineered a custom centrifugal bowl feeder, feeding parts down a transparent glass track. Bi-telecentric lenses captured the parts in free-fall, and air-jets ejected defective units directly into scrap bins before they hit the collection hopper.
+                </p>
+                <div className="flex gap-6 border-t border-white/10 pt-8 mt-4">
+                  <div>
+                    <span className="block text-3xl font-bold text-amber-400 mb-1">1,200</span>
+                    <span className="text-[11px] uppercase tracking-widest font-bold text-emerald-500">Parts Per Min</span>
+                  </div>
+                  <div className="w-[1px] bg-white/10"></div>
+                  <div>
+                    <span className="block text-3xl font-bold text-amber-400 mb-1">&lt;0.1mm</span>
+                    <span className="text-[11px] uppercase tracking-widest font-bold text-emerald-500">Tolerance</span>
+                  </div>
+                </div>
+             </div>
+             <div className="lg:w-1/2 bg-white/5 rounded-xl border border-white/10 p-4 shadow-2xl">
+               <div className="bg-black/50 rounded-lg h-[400px] flex items-center justify-center text-white/30 font-mono text-sm border border-white/5 relative overflow-hidden">
+                 <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[size:20px_20px]"></div>
+                 <Cog size={120} className="animate-spin-slow opacity-20 text-emerald-500" />
+                 <span className="absolute bottom-6 left-6 tracking-widest text-[10px] text-amber-500/50">3D_CAD_RENDER_PENDING</span>
+               </div>
+             </div>
+          </div>
+        </section>
+
       </main>
     </>
   );
@@ -1724,12 +2105,12 @@ function CamerasContent({ setPage, currentPage }) {
     <>
       <section className="sticky top-0 h-screen w-full flex flex-col justify-center bg-black text-white relative overflow-hidden pt-32 z-0">
         <div className="absolute inset-0 bg-black/80 mix-blend-overlay z-0"></div>
-        <img src={IMAGES.digitalCameras} onError={handleImageError} className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-luminosity" alt="Digital Cameras" />
+        <img src={IMAGES.digitalCameras} onError={handleImageError} className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-luminosity" alt="Digital Cameras & Inspection Systems" />
         <div className="px-[3%] w-full relative z-10">
         <div className="max-w-6xl w-full reveal-on-scroll">
           <p className="text-[14px] font-bold tracking-widest text-amber-400 uppercase mb-4">DIVISION 02</p>
-          <h1 className="text-5xl md:text-[72px] font-bold tracking-tight uppercase leading-[1] mb-6 text-white">
-            DIGITAL <span className="font-light text-emerald-300">CAMERAS</span>
+          <h1 className="text-5xl md:text-[64px] font-bold tracking-tight uppercase leading-[1] mb-6 text-white">
+            DIGITAL CAMERAS <span className="font-light text-emerald-300">& INSPECTION SYSTEMS</span>
           </h1>
           <p className="text-emerald-100 font-light text-[17px] max-w-2xl border-l-2 border-amber-500 pl-4">
             Capturing data at the speed of manufacturing. From USB3 entry-level sensors to intelligent edge-processing smart cameras.
@@ -1738,98 +2119,128 @@ function CamerasContent({ setPage, currentPage }) {
         </div>
       </section>
 
-      <main className="relative z-10 bg-emerald-50 rounded-t-xl shadow-[0_-20px_50px_rgba(0,0,0,0.1)] py-[10vh]">
+      <main className="relative z-10 bg-white rounded-t-xl shadow-[0_-20px_50px_rgba(0,0,0,0.1)] py-[10vh]">
         <div className="max-w-[1440px] mx-auto px-[3%] space-y-20">
-          <section className="reveal-on-scroll flex flex-col lg:flex-row-reverse gap-16 lg:gap-24 items-center">
-            <div className="lg:w-[50%]">
-              <p className="text-[14px] font-bold tracking-ultra text-emerald-600 uppercase mb-6">Data Capture</p>
-              <h2 className="text-4xl md:text-5xl lg:text-6xl font-light tracking-tighter uppercase leading-[1.1] mb-8 text-neutral-900">
-                SENSORS THAT <br /><span className="font-medium">THINK</span>
-              </h2>
-              <div className="space-y-6 text-black/60 font-light text-[17px] leading-relaxed mb-10">
-                <p>Our camera division features elite setups including the Basler ace 2 series and TrueChrome interfaces. We don't just capture images; we capture actionable logic.</p>
-                <p>Equipped for fluorescence, high-speed sorting, and extreme low-light environments (Cooled CMOS), these cameras act as the digital retinas for automated systems.</p>
+          {/* Section: Digital Cameras for Microscope */}
+          <section className="reveal-on-scroll bg-white rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl transition-all p-10 lg:p-14">
+            <div className="flex flex-col lg:flex-row gap-12 items-center">
+              <div className="lg:w-[40%] w-full">
+                <h2 className="text-2xl lg:text-3xl font-bold text-red-600 mb-6 leading-snug">Digital Cameras for Microscope</h2>
+                <ul className="space-y-3 text-slate-700 text-[16px] font-light">
+                  <li className="flex items-center gap-3"><span className="w-2 h-2 rounded-full bg-slate-400 flex-shrink-0"></span>Smart Cameras</li>
+                  <li className="flex items-center gap-3"><span className="w-2 h-2 rounded-full bg-slate-400 flex-shrink-0"></span>Entry Level Cameras</li>
+                  <li className="flex items-center gap-3"><span className="w-2 h-2 rounded-full bg-slate-400 flex-shrink-0"></span>USB2 or USB 3 Cameras</li>
+                  <li className="flex items-center gap-3"><span className="w-2 h-2 rounded-full bg-slate-400 flex-shrink-0"></span>Cooled CMOS Cameras</li>
+                  <li className="flex items-center gap-3"><span className="w-2 h-2 rounded-full bg-slate-400 flex-shrink-0"></span>USB3 Fluorescence Cameras</li>
+                </ul>
               </div>
-              <div className="grid grid-cols-2 gap-6">
-                <div className="bg-neutral-50 p-8 rounded-xl shadow-lg border-2 border-slate-300 hover:border-emerald-400 hover:shadow-xl transition-all">
-                  <Zap className="text-amber-500 mb-4" size={32} strokeWidth={1.5} />
-                  <h4 className="text-lg font-medium text-emerald-950 mb-1">High Speed</h4>
-                  <p className="text-[13px] text-black/50 font-light">Framerate optimization for fast-moving lines.</p>
-                </div>
-                <div className="bg-neutral-50 p-8 rounded-xl shadow-lg border-2 border-slate-300 hover:border-emerald-400 hover:shadow-xl transition-all">
-                  <Microchip className="text-amber-500 mb-4" size={32} strokeWidth={1.5} />
-                  <h4 className="text-lg font-medium text-emerald-950 mb-1">Smart Logic</h4>
-                  <p className="text-[13px] text-black/50 font-light">Edge processing embedded directly in the sensor.</p>
-                </div>
+              <div className="lg:w-[60%] w-full bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-center p-6 min-h-[280px]">
+                <img src="/digital-cameras/digital-cameras.jpg" loading="lazy" decoding="async" className="max-h-[260px] max-w-full object-contain" alt="Digital Cameras for Microscope" />
               </div>
-            </div>
-            <div className="lg:w-[50%] w-full h-[400px] lg:h-[600px] rounded-xl overflow-hidden shadow-2xl relative border border-black/5">
-              <img src={IMAGES.digitalCameras} onError={handleImageError} loading="lazy" decoding="async" className="w-full h-full object-cover" alt="Camera Sensors" />
             </div>
           </section>
 
-          {/* Environmental Resilience */}
-          <section className="reveal-on-scroll bg-white py-[10vh] px-[5%] rounded-xl shadow-lg border-2 border-slate-300 mt-16">
-            <div className="text-center mb-16 max-w-4xl mx-auto">
-              <p className="text-[14px] font-bold tracking-widest text-emerald-600 uppercase mb-4">Environmental Resilience</p>
-              <h2 className="text-4xl md:text-5xl font-light tracking-tighter uppercase leading-[1.1] mb-6 text-emerald-950">
-                PERFORMANCE UNDER <span className="font-medium text-emerald-800">PRESSURE</span>
-              </h2>
-              <p className="text-black/60 font-light text-[17px] leading-relaxed">
-                Industrial sensors must survive environments that destroy standard consumer electronics. Our deployments are rated for extreme conditions.
-              </p>
-            </div>
-            <div className="grid md:grid-cols-4 gap-6">
-              {[
-                { title: 'Thermal Resistance', text: 'Operational stability in extreme factory heat or cold storage.', icon: Activity },
-                { title: 'IP67/69K Housings', text: 'Complete protection against washdowns, dust, and particulates.', icon: ShieldCheck },
-                { title: 'Vibration Tolerance', text: 'Maintaining sub-pixel calibration despite heavy machinery vibrations.', icon: Zap },
-                { title: 'Cooled CMOS', text: 'Thermoelectric cooling to reduce noise in extreme low-light fluorescence.', icon: Code2 }
-              ].map((item, i) => (
-                <div key={i} className="bg-neutral-50 rounded-xl p-8 shadow-lg border-2 border-slate-300 flex flex-col items-center text-center hover:-translate-y-2 hover:shadow-xl transition-all">
-                  <div className="w-14 h-14 bg-white text-emerald-600 rounded-xl flex items-center justify-center mb-6 border border-black/5 shadow-sm">
-                    <item.icon size={24} />
-                  </div>
-                  <h4 className="text-[15px] font-bold text-emerald-950 mb-3">{item.title}</h4>
-                  <p className="text-[13px] text-black/60 font-light leading-relaxed">{item.text}</p>
-                </div>
-              ))}
+          {/* Section: Industrial Cameras + Application Images */}
+          <section className="reveal-on-scroll">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="bg-white p-6 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center min-h-[280px]">
+                <img src="/digital-cameras/digital-cameras-2.jpg" loading="lazy" decoding="async" className="max-h-[240px] max-w-full object-contain" alt="High-Speed Industrial Cameras" />
+              </div>
+              <div className="bg-white p-6 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center min-h-[280px]">
+                <img src="/digital-cameras/digital-cameras-3.jpg" loading="lazy" decoding="async" className="max-h-[240px] max-w-full object-contain" alt="Silicon Wafer Inspection" />
+              </div>
+              <div className="bg-white p-6 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all flex items-center justify-center min-h-[280px]">
+                <img src="/digital-cameras/digital-cameras-4.jpg" loading="lazy" decoding="async" className="max-h-[240px] max-w-full object-contain" alt="Semiconductor / PCB Inspection" />
+              </div>
             </div>
           </section>
 
-          <section className="reveal-on-scroll bg-emerald-950 text-white p-10 lg:p-16 rounded-xl shadow-2xl relative overflow-hidden mt-16">
-             <div className="absolute top-0 right-0 w-[400px] h-[400px] bg-emerald-800 rounded-full blur-[150px] opacity-30 pointer-events-none"></div>
-             <div className="relative z-10">
-                <h3 className="text-3xl font-light text-white mb-10">Camera Technologies We Deploy</h3>
-                <div className="grid md:grid-cols-2 gap-x-12 gap-y-6 text-white/80 font-light text-[15px]">
-                  <div className="flex items-center gap-4 bg-white/5 p-4 rounded-xl border border-white/5 hover:bg-emerald-900/50 transition-colors cursor-default">
-                    <div className="bg-emerald-500/20 p-2 rounded-lg text-amber-400"><ChevronRight size={18}/></div>
-                    Tucsen Photonics (Michrome, TrueChrome)
-                  </div>
-                  <div className="flex items-center gap-4 bg-white/5 p-4 rounded-xl border border-white/5 hover:bg-emerald-900/50 transition-colors cursor-default">
-                    <div className="bg-emerald-500/20 p-2 rounded-lg text-amber-400"><ChevronRight size={18}/></div>
-                    Basler (ace 2, High Speed)
-                  </div>
-                  <div className="flex items-center gap-4 bg-white/5 p-4 rounded-xl border border-white/5 hover:bg-emerald-900/50 transition-colors cursor-default">
-                    <div className="bg-emerald-500/20 p-2 rounded-lg text-amber-400"><ChevronRight size={18}/></div>
-                    Entry Level & Smart Cameras
-                  </div>
-                  <div className="flex items-center gap-4 bg-white/5 p-4 rounded-xl border border-white/5 hover:bg-emerald-900/50 transition-colors cursor-default">
-                    <div className="bg-emerald-500/20 p-2 rounded-lg text-amber-400"><ChevronRight size={18}/></div>
-                    USB2, USB3 & Cooled CMOS
-                  </div>
-                  <div className="flex items-center gap-4 bg-white/5 p-4 rounded-xl border border-white/5 md:col-span-2 hover:bg-emerald-900/50 transition-colors cursor-default">
-                    <div className="bg-emerald-500/20 p-2 rounded-lg text-amber-400"><ChevronRight size={18}/></div>
-                    Fluorescence specific ultra-low light sensors
-                  </div>
-               </div>
-             </div>
+          {/* Section: Industrial Vision & Online Inspection Systems */}
+          <section className="reveal-on-scroll bg-white rounded-xl border-2 border-slate-300 shadow-lg p-10 lg:p-14">
+            <h2 className="text-2xl lg:text-3xl font-bold text-red-600 mb-10 text-center leading-snug">Industrial Vision &amp; Online Inspection Systems</h2>
+
+            {/* Industrial Lights */}
+            <p className="text-[15px] font-semibold text-slate-600 text-center mb-6">Industrial Lights</p>
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">
+              <div className="bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-center p-5 min-h-[200px]">
+                <img src="/digital-cameras/industrial-lights-1.jpg" loading="lazy" decoding="async" className="max-h-[170px] max-w-full object-contain" alt="Dome / Flat Ring Light" />
+              </div>
+              <div className="bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-center p-5 min-h-[200px]">
+                <img src="/digital-cameras/industrial-lights-2.jpg" loading="lazy" decoding="async" className="max-h-[170px] max-w-full object-contain" alt="Square LED Lights" />
+              </div>
+              <div className="bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-center p-5 min-h-[200px]">
+                <img src="/digital-cameras/industrial-lights-3.jpg" loading="lazy" decoding="async" className="max-h-[170px] max-w-full object-contain" alt="Ring Lights" />
+              </div>
+              <div className="bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-center p-5 min-h-[200px]">
+                <img src="/digital-cameras/industrial-lights-4.jpg" loading="lazy" decoding="async" className="max-h-[170px] max-w-full object-contain" alt="Bar LED Lights" />
+              </div>
+            </div>
+
+            {/* Special Purpose Lights */}
+            <p className="text-[15px] font-semibold text-slate-600 text-center mb-6">Special Purpose Lights</p>
+            <div className="flex justify-center gap-6">
+              <div className="bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-center p-5 min-h-[200px] w-full max-w-[320px]">
+                <img src="/digital-cameras/special-1.jpg" loading="lazy" decoding="async" className="max-h-[170px] max-w-full object-contain" alt="Bright Field Ring Light" />
+              </div>
+              <div className="bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-center p-5 min-h-[200px] w-full max-w-[320px]">
+                <img src="/digital-cameras/special-2.jpg" loading="lazy" decoding="async" className="max-h-[170px] max-w-full object-contain" alt="Dark Field / Backlight Diffuser" />
+              </div>
+            </div>
+          </section>
+
+          {/* Section: High Speed Camera */}
+          <section className="reveal-on-scroll bg-white rounded-xl border-2 border-slate-300 shadow-lg p-10 lg:p-14">
+            <p className="text-[15px] font-semibold text-slate-600 text-center mb-8">High Speed Camera</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-center p-6 min-h-[220px]">
+                <img src="/digital-cameras/high-speed-camera-1.jpg" loading="lazy" decoding="async" className="max-h-[190px] max-w-full object-contain" alt="Basler aviator & ace Cameras" />
+              </div>
+              <div className="bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-center p-6 min-h-[220px]">
+                <img src="/digital-cameras/high-speed-camera-2.jpg" loading="lazy" decoding="async" className="max-h-[190px] max-w-full object-contain" alt="GigE Smart Camera" />
+              </div>
+              <div className="bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-center p-6 min-h-[220px]">
+                <img src="/digital-cameras/high-speed-camera-3.jpg" loading="lazy" decoding="async" className="max-h-[190px] max-w-full object-contain" alt="Basler ace 2 Basic with Lens" />
+              </div>
+            </div>
+          </section>
+
+          {/* Section: Lenses */}
+          <section className="reveal-on-scroll bg-white rounded-xl border-2 border-slate-300 shadow-lg p-10 lg:p-14 flex flex-col items-center">
+            <p className="text-[15px] font-semibold text-slate-600 text-center mb-8">Lenses</p>
+            <div className="bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-center p-6 min-h-[260px] max-w-lg w-full">
+              <img src="/digital-cameras/lenses.jpg" loading="lazy" decoding="async" className="max-h-[220px] max-w-full object-contain" alt="Industrial Machine Vision Lenses" />
+            </div>
+          </section>
+
+          {/* Section: Industrial Vision text + image */}
+          <section className="reveal-on-scroll bg-white rounded-xl border-2 border-slate-300 shadow-lg p-10 lg:p-14">
+            <div className="flex flex-col lg:flex-row gap-12 items-center">
+              <div className="lg:w-[40%] w-full">
+                <h2 className="text-2xl lg:text-3xl font-bold text-red-600 mb-6 leading-snug">Industrial Vision &amp; Online Inspection Systems</h2>
+                <ul className="space-y-3 text-slate-700 text-[15px] font-light">
+                  <li className="flex items-center gap-3"><span className="w-2 h-2 rounded-full bg-slate-400 flex-shrink-0"></span>Print Inspection</li>
+                  <li className="flex items-center gap-3"><span className="w-2 h-2 rounded-full bg-slate-400 flex-shrink-0"></span>Track &amp; Trace</li>
+                  <li className="flex items-center gap-3"><span className="w-2 h-2 rounded-full bg-slate-400 flex-shrink-0"></span>Sorting</li>
+                  <li className="flex items-center gap-3"><span className="w-2 h-2 rounded-full bg-slate-400 flex-shrink-0"></span>Measurement</li>
+                  <li className="flex items-center gap-3"><span className="w-2 h-2 rounded-full bg-slate-400 flex-shrink-0"></span>Presence/Absence</li>
+                  <li className="flex items-center gap-3"><span className="w-2 h-2 rounded-full bg-slate-400 flex-shrink-0"></span>Print Verification</li>
+                  <li className="flex items-center gap-3"><span className="w-2 h-2 rounded-full bg-slate-400 flex-shrink-0"></span>Web viewing system</li>
+                  <li className="flex items-center gap-3"><span className="w-2 h-2 rounded-full bg-slate-400 flex-shrink-0"></span>Colour registration system</li>
+                </ul>
+              </div>
+              <div className="lg:w-[60%] w-full rounded-xl overflow-hidden border border-slate-200 min-h-[280px] flex items-center justify-center">
+                <img src="/digital-cameras/industrial-vision.jpg" loading="lazy" decoding="async" className="w-full h-full object-cover max-h-[380px]" alt="Industrial Vision System" />
+              </div>
+            </div>
           </section>
         </div>
       </main>
     </>
   );
 }
+
+// Brain icon shim (lucide-react version installed lacks it)
+function Brain(props) { return <Cpu {...props} />; }
 
 // ---------------------------------------------------------
 // 5C. SOLUTIONS - MACHINE VISION
@@ -1952,13 +2363,112 @@ function MachineVisionContent({ setPage, currentPage }) {
             </div>
           </div>
         </section>
+
+        {/* AI & Deep Learning */}
+        <section className="px-[3%] w-full py-[12vh] bg-emerald-950 text-white relative overflow-hidden">
+          <div className="max-w-[1440px] mx-auto w-full reveal-on-scroll flex flex-col md:flex-row gap-12 items-center">
+            <div className="md:w-1/2">
+              <Brain size={48} className="text-amber-400 mb-6" />
+              <p className="text-[11px] font-bold tracking-widest text-amber-400 uppercase mb-4">Next-Gen Intelligence</p>
+              <h3 className="text-3xl md:text-4xl font-light tracking-tighter mb-6">AI & <span className="font-bold">Deep Learning</span></h3>
+              <p className="font-light text-emerald-100/80 text-[15px] leading-relaxed mb-4">Moving beyond rigid rule-based vision. We deploy trained AI models to detect unpredictable organic defects on fruits, complex welds, and highly degraded OCR text — where traditional algorithms fail.</p>
+              <p className="font-light text-emerald-100/60 text-[14px] leading-relaxed">Our models train on your specific production line samples, achieving over 99.8% confidence rates within weeks of deployment.</p>
+            </div>
+            <div className="md:w-1/2 bg-black/60 p-6 rounded-xl border border-white/10 font-mono text-xs text-emerald-400 shadow-2xl">
+              <div className="flex items-center gap-2 mb-4 pb-3 border-b border-white/10">
+                <span className="w-3 h-3 rounded-full bg-rose-500"></span>
+                <span className="w-3 h-3 rounded-full bg-amber-500"></span>
+                <span className="w-3 h-3 rounded-full bg-emerald-500"></span>
+                <span className="text-white/40 ml-2 text-[10px] tracking-widest">INVADE_AI_INFERENCE_ENGINE</span>
+              </div>
+              <div className="space-y-2 leading-relaxed">
+                <p><span className="text-amber-400">&gt;</span> LOADING TENSOR MODEL v2.4...</p>
+                <p><span className="text-emerald-400">&gt;</span> MODEL: defect_classifier_pharma.h5</p>
+                <p><span className="text-white/40">&gt;</span> FRAME CAPTURED. EXPOSURE: 150µs.</p>
+                <p><span className="text-white/40">&gt;</span> INFERENCE PROCESSING... <span className="text-amber-400">0.8ms</span></p>
+                <p><span className="text-emerald-400">&gt;</span> CONFIDENCE: <span className="text-white font-bold">99.8%</span></p>
+                <p><span className="text-rose-400 font-bold">&gt;</span> DEFECT_TYPE: <span className="text-rose-300">"Micro-crack on seal"</span></p>
+                <p><span className="text-amber-400">&gt;</span> ACTION: FIRE_PNEUMATIC_EJECTOR()</p>
+                <p><span className="text-emerald-400">&gt;</span> SYSTEM READY — AWAITING NEXT TRIGGER...</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* 3D Profiling & Multi-Spectral */}
+        <section className="px-[3%] w-full py-[12vh] bg-white relative overflow-hidden">
+          <div className="max-w-[1440px] mx-auto w-full reveal-on-scroll">
+            <div className="text-center mb-16">
+              <p className="text-[11px] font-bold tracking-widest text-emerald-600 uppercase mb-4">Advanced Sensing</p>
+              <h2 className="text-3xl md:text-4xl font-light tracking-tighter uppercase text-emerald-950">Beyond Standard <span className="font-bold">Imaging</span></h2>
+            </div>
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="bg-neutral-50 p-10 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl transition-all">
+                <Layers className="text-emerald-500 mb-4" size={40}/>
+                <h3 className="text-xl font-bold mb-3 text-emerald-950">3D Laser Profiling</h3>
+                <p className="text-[15px] font-light text-black/60 leading-relaxed">Using laser triangulation to measure depth, volume, and topology of automotive gaskets, PCB solder paste deposits, and bead fill in food packaging — with micron-level accuracy.</p>
+              </div>
+              <div className="bg-neutral-50 p-10 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl transition-all">
+                <Aperture className="text-emerald-500 mb-4" size={40}/>
+                <h3 className="text-xl font-bold mb-3 text-emerald-950">Multi-Spectral Imaging</h3>
+                <p className="text-[15px] font-light text-black/60 leading-relaxed">Operating in IR and UV bands to detect invisible seal leaks in blister packs, moisture contamination in agro products, and surface coatings invisible to the human eye.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Optical Precision */}
+        <section className="px-[3%] w-full py-[10vh] bg-neutral-100 relative overflow-hidden">
+          <div className="max-w-[1440px] mx-auto w-full reveal-on-scroll text-center">
+            <h3 className="text-3xl font-light tracking-tighter uppercase text-emerald-950 mb-4">Lens Selection & <span className="font-bold">Optical Precision</span></h3>
+            <p className="text-black/50 font-light max-w-xl mx-auto mb-10 text-[15px]">The wrong lens introduces distortion that invalidates all downstream logic. We specify and calibrate each lens to the exact application.</p>
+            <div className="flex justify-center flex-wrap gap-4">
+              {["Telecentric Lenses (Zero Edge Distortion)", "High-Res Macro Lenses", "Liquid Auto-Focus Lenses", "Bi-Telecentric Lenses", "Low-Distortion FA Lenses"].map(l => (
+                <span key={l} className="px-6 py-3 bg-white border-2 border-slate-200 rounded-xl shadow-sm text-sm font-bold text-emerald-950 hover:border-emerald-400 transition-colors">{l}</span>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Reject Mechanisms */}
+        <section className="px-[3%] w-full py-[12vh] bg-emerald-50 relative overflow-hidden border-y border-emerald-100">
+          <div className="max-w-[1440px] mx-auto w-full reveal-on-scroll flex flex-col md:flex-row gap-12 items-center">
+            <div className="md:w-1/2">
+              <p className="text-[11px] font-bold tracking-widest text-emerald-600 uppercase mb-4">Closing the Loop</p>
+              <h3 className="text-3xl md:text-4xl font-bold tracking-tighter text-emerald-950 mb-6">Precision <span className="font-light">Rejection</span></h3>
+              <p className="font-light text-black/60 text-[15px] leading-relaxed mb-8">Vision without action is useless. We wire our software output directly to high-speed physical rejection mechanisms, completing the closed-loop quality control cycle in milliseconds.</p>
+              <ul className="space-y-3 text-[14px] font-bold text-emerald-800">
+                {["Air-Blast Blowers (light / small items)", "Pneumatic Pushers & Flippers (heavy boxes)", "Drop-Gates (bulk / gravity sorting)", "Conveyor Diverters (multi-lane routing)"].map(r => (
+                  <li key={r} className="flex items-center gap-3"><span className="w-2 h-2 rounded-full bg-amber-500 flex-shrink-0"></span>{r}</li>
+                ))}
+              </ul>
+            </div>
+            <div className="md:w-1/2 w-full bg-white rounded-xl border-2 border-slate-300 shadow-xl flex flex-col items-center justify-center py-16 gap-4">
+              <Zap size={64} className="text-emerald-300" />
+              <p className="text-[11px] font-bold tracking-widest uppercase text-black/30">Reject Gate Actuated</p>
+              <p className="text-4xl font-bold text-emerald-950">&lt;2ms</p>
+              <p className="text-[13px] text-black/40">Trigger-to-ejection latency</p>
+            </div>
+          </div>
+        </section>
+
+        {/* ROI CTA */}
+        <section className="px-[3%] w-full py-[12vh] bg-emerald-950 text-white text-center relative overflow-hidden">
+          <div className="max-w-[1440px] mx-auto w-full reveal-on-scroll relative z-10">
+            <h2 className="text-4xl md:text-5xl font-bold tracking-tighter uppercase mb-4">Stop Shipping Defects.</h2>
+            <p className="font-light text-emerald-100/70 text-[16px] max-w-2xl mx-auto mb-10">Eliminate brand-damaging recalls and manual QA labour costs permanently. Our clients see a full ROI in under 14 months.</p>
+            <button onClick={() => setPage('contact')} className="bg-amber-500 text-emerald-950 px-10 py-4 text-[12px] font-bold tracking-widest uppercase rounded-xl hover:bg-white hover:text-emerald-900 transition-all shadow-[0_0_30px_rgba(245,158,11,0.3)]">
+              Request a Demo Line
+            </button>
+          </div>
+        </section>
+
       </main>
     </>
   );
 }
 
-// ---------------------------------------------------------
-// 6. APPLICATIONS PAGE
+
 // ---------------------------------------------------------
 function ApplicationsContent({ currentPage }) {
   usePageScroll(currentPage);
@@ -1996,25 +2506,79 @@ function ApplicationsContent({ currentPage }) {
           <section className="reveal-on-scroll">
             <div className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl font-light tracking-tighter uppercase leading-[1.1] text-neutral-900">
-                GLOBAL SECTORS
+                DOMAIN EXPERTISE
               </h2>
+              <p className="text-black/50 mt-4 max-w-2xl mx-auto">Deep integrations customized for the specific regulatory and mechanical demands of distinct industries.</p>
             </div>
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                {[
-                    { title: "Aerospace & Defense", icon: Globe2 },
-                    { title: "Automobiles", icon: Settings },
-                    { title: "Chemicals & Oil/Gas", icon: Beaker },
-                    { title: "Electronics & IT", icon: Cpu },
-                    { title: "Food Processing", icon: MonitorPlay },
-                    { title: "Gems & Jewellery", icon: Aperture },
-                    { title: "Pharmaceuticals", icon: Activity },
-                    { title: "Textile & Leather", icon: Layers }
-                ].map((s,i) => (
-                    <div key={i} className="flex items-center gap-5 p-6 bg-white border-2 border-slate-300 rounded-xl text-emerald-950 font-medium shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all group">
-                        <div className="bg-emerald-50 p-3 rounded-xl text-amber-500 border border-emerald-100 group-hover:bg-amber-500 group-hover:text-white transition-colors"><s.icon size={24} strokeWidth={1.5}/></div>
-                        {s.title}
-                    </div>
-                ))}
+            
+            <div className="grid md:grid-cols-2 gap-8">
+               {/* Agro & Food */}
+               <div className="bg-white p-10 rounded-xl border-2 border-slate-300 shadow-lg relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-amber-50 rounded-bl-full -z-0 transition-transform group-hover:scale-150 duration-700"></div>
+                  <div className="relative z-10">
+                     <div className="flex items-center gap-4 mb-6">
+                        <div className="p-4 bg-amber-100 rounded-xl text-amber-600"><TestTube2 size={24} /></div>
+                        <h3 className="text-2xl font-bold text-emerald-950">Agro & F&B</h3>
+                     </div>
+                     <p className="text-[14px] text-black/60 leading-relaxed mb-6 font-light">From high-speed bottling label verification to automated sorting of agricultural produce based on precise color and geometric properties.</p>
+                     <ul className="space-y-2 text-[13px] font-medium text-emerald-900">
+                        <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-amber-500"></div> High-speed Fill Level Inspection</li>
+                        <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-amber-500"></div> Cap & Seal Integrity Checks</li>
+                        <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-amber-500"></div> Produce Sorting (Color/Defect)</li>
+                     </ul>
+                  </div>
+               </div>
+
+               {/* Medical & Pharma */}
+               <div className="bg-white p-10 rounded-xl border-2 border-slate-300 shadow-lg relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-bl-full -z-0 transition-transform group-hover:scale-150 duration-700"></div>
+                  <div className="relative z-10">
+                     <div className="flex items-center gap-4 mb-6">
+                        <div className="p-4 bg-emerald-100 rounded-xl text-emerald-600"><Activity size={24} /></div>
+                        <h3 className="text-2xl font-bold text-emerald-950">Medical & Pharma</h3>
+                     </div>
+                     <p className="text-[14px] text-black/60 leading-relaxed mb-6 font-light">Zero-defect tolerance inspection systems for life-saving medical devices and exhaustive CFR 21 Part 11 compliant pharmaceutical packaging.</p>
+                     <ul className="space-y-2 text-[13px] font-medium text-emerald-900">
+                        <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div> Blister Pack Verification</li>
+                        <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div> Stent & Catheter Metrology</li>
+                        <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-emerald-500"></div> Syringe Assembly Inspection</li>
+                     </ul>
+                  </div>
+               </div>
+
+               {/* Space & Defense */}
+               <div className="bg-white p-10 rounded-xl border-2 border-slate-300 shadow-lg relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-slate-100 rounded-bl-full -z-0 transition-transform group-hover:scale-150 duration-700"></div>
+                  <div className="relative z-10">
+                     <div className="flex items-center gap-4 mb-6">
+                        <div className="p-4 bg-slate-200 rounded-xl text-slate-700"><Globe2 size={24} /></div>
+                        <h3 className="text-2xl font-bold text-emerald-950">Space & Defense</h3>
+                     </div>
+                     <p className="text-[14px] text-black/60 leading-relaxed mb-6 font-light">Sub-micron metallurgical analysis for aerospace alloys and extremely ruggedized vision nodes for defense manufacturing pipelines.</p>
+                     <ul className="space-y-2 text-[13px] font-medium text-emerald-900">
+                        <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-slate-500"></div> Turbine Blade Metrology</li>
+                        <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-slate-500"></div> Ammunition Sorting Automation</li>
+                        <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-slate-500"></div> Composite Material Analysis</li>
+                     </ul>
+                  </div>
+               </div>
+
+               {/* Automotive & Heavy Engineering */}
+               <div className="bg-white p-10 rounded-xl border-2 border-slate-300 shadow-lg relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-blue-50 rounded-bl-full -z-0 transition-transform group-hover:scale-150 duration-700"></div>
+                  <div className="relative z-10">
+                     <div className="flex items-center gap-4 mb-6">
+                        <div className="p-4 bg-blue-100 rounded-xl text-blue-600"><Settings size={24} /></div>
+                        <h3 className="text-2xl font-bold text-emerald-950">Automotive</h3>
+                     </div>
+                     <p className="text-[14px] text-black/60 leading-relaxed mb-6 font-light">Guiding robotic welding arms with 3D profiling cameras and ensuring perfect dimensional accuracy on high-speed CNC output lines.</p>
+                     <ul className="space-y-2 text-[13px] font-medium text-emerald-900">
+                        <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div> Robotic Weld Seam Tracking</li>
+                        <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div> Engine Block 3D Profiling</li>
+                        <li className="flex items-center gap-2"><div className="w-1.5 h-1.5 rounded-full bg-blue-500"></div> Component Surface Defect QA</li>
+                     </ul>
+                  </div>
+               </div>
             </div>
           </section>
 
@@ -2172,6 +2736,64 @@ function ClientsContent({ currentPage }) {
               </div>
               <div className="lg:w-1/2 h-[300px] lg:h-auto relative">
                 <img src={IMAGES.manufacturing} onError={handleImageError} loading="lazy" decoding="async" className="w-full h-full object-cover grayscale opacity-80" alt="Factory Line" />
+              </div>
+            </div>
+          </section>
+
+          {/* Deployment Stats & ROI */}
+          <section className="reveal-on-scroll border-t border-black/5 pt-20">
+            <div className="flex flex-col lg:flex-row gap-8 items-stretch">
+              <div className="lg:w-1/3 bg-emerald-950 text-white p-10 rounded-xl shadow-lg relative overflow-hidden">
+                 <div className="absolute top-0 right-0 w-32 h-32 bg-amber-500 rounded-full blur-[80px] opacity-30"></div>
+                 <BarChart3 size={32} className="text-amber-500 mb-6" />
+                 <h3 className="text-4xl font-light mb-2">500+</h3>
+                 <p className="text-[12px] font-bold tracking-widest text-emerald-400 uppercase mb-8">Deployments</p>
+                 <p className="text-emerald-100/70 text-[14px] leading-relaxed font-light">From single standalone microscopy stations to fully integrated, multi-node factory automation networks across the globe.</p>
+              </div>
+              <div className="lg:w-1/3 bg-emerald-50 p-10 rounded-xl shadow-lg border border-emerald-100 flex flex-col justify-center">
+                 <h3 className="text-4xl font-light text-emerald-950 mb-2">99.9%</h3>
+                 <p className="text-[12px] font-bold tracking-widest text-emerald-600 uppercase mb-4">Uptime Guarantee</p>
+                 <p className="text-black/60 text-[14px] leading-relaxed font-light">Our hardware redundancy and resilient Pixelr logic core ensure that your QA line never becomes the production bottleneck.</p>
+              </div>
+              <div className="lg:w-1/3 bg-white p-10 rounded-xl shadow-lg border-2 border-slate-300 flex flex-col justify-center text-center items-center">
+                 <div className="w-16 h-16 rounded-full border-4 border-emerald-500 flex items-center justify-center text-emerald-500 font-bold text-xl mb-4">
+                    ROI
+                 </div>
+                 <h3 className="text-2xl font-bold text-emerald-950 mb-2">&lt; 1 Year</h3>
+                 <p className="text-[12px] font-bold tracking-widest text-black/40 uppercase">Average Payback</p>
+              </div>
+            </div>
+          </section>
+
+          {/* Client Testimonials */}
+          <section className="reveal-on-scroll border-t border-black/5 pt-20">
+            <h2 className="text-3xl md:text-4xl font-light tracking-tighter uppercase mb-12 text-center text-neutral-900">Direct <span className="font-bold text-emerald-900">Feedback</span></h2>
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="bg-white p-10 rounded-xl border-2 border-slate-300 shadow-lg relative">
+                <span className="absolute top-6 right-8 text-6xl text-emerald-50 font-serif leading-none">"</span>
+                <p className="text-black/60 italic text-[15px] font-light leading-relaxed mb-8 relative z-10">
+                  "The transition from manual visual inspection to Invade's automated systems reduced our false-reject rate from 4% to 0.1%. The system paid for itself in saved raw materials within 8 months."
+                </p>
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-full bg-emerald-900 flex items-center justify-center text-white text-[12px] font-bold">AS</div>
+                  <div>
+                    <h4 className="font-bold text-emerald-950 text-[13px]">VP Operations</h4>
+                    <p className="text-[10px] text-amber-600 font-bold uppercase tracking-widest">Top 10 FMCG Brand</p>
+                  </div>
+                </div>
+              </div>
+              <div className="bg-white p-10 rounded-xl border-2 border-slate-300 shadow-lg relative">
+                <span className="absolute top-6 right-8 text-6xl text-emerald-50 font-serif leading-none">"</span>
+                <p className="text-black/60 italic text-[15px] font-light leading-relaxed mb-8 relative z-10">
+                  "For IVF micromanipulation, there is zero room for error. The inverted setups provided by Invade Machines gave us perfect thermal stability and anti-vibration performance. Highly recommended."
+                </p>
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-10 rounded-full bg-emerald-900 flex items-center justify-center text-white text-[12px] font-bold">DR</div>
+                  <div>
+                    <h4 className="font-bold text-emerald-950 text-[13px]">Clinical Director</h4>
+                    <p className="text-[10px] text-amber-600 font-bold uppercase tracking-widest">National Fertility Center</p>
+                  </div>
+                </div>
               </div>
             </div>
           </section>
@@ -2349,6 +2971,448 @@ function ContactContent({ currentPage }) {
                  </div>
               </div>
             </div>
+          </div>
+        </section>
+
+        {/* Global Support & RMA */}
+        <section className="px-[3%] w-full py-[10vh] bg-white border-t border-slate-200">
+          <div className="max-w-[1440px] mx-auto w-full reveal-on-scroll">
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="bg-neutral-50 p-8 rounded-xl border-2 border-slate-300 shadow-sm hover:shadow-lg transition-all text-center">
+                <Headphones size={32} className="text-emerald-500 mx-auto mb-4" />
+                <h4 className="text-xl font-bold text-emerald-950 mb-3">Tech Support Portal</h4>
+                <p className="text-[13px] text-black/60 leading-relaxed mb-6">Access software drivers, user manuals, and raise priority L2 support tickets.</p>
+                <button className="text-[11px] font-bold tracking-widest text-emerald-600 uppercase border-b border-emerald-600 pb-1 hover:text-amber-500 hover:border-amber-500 transition-colors">Client Login &rarr;</button>
+              </div>
+              <div className="bg-neutral-50 p-8 rounded-xl border-2 border-slate-300 shadow-sm hover:shadow-lg transition-all text-center">
+                <Truck size={32} className="text-emerald-500 mx-auto mb-4" />
+                <h4 className="text-xl font-bold text-emerald-950 mb-3">RMA & Logistics</h4>
+                <p className="text-[13px] text-black/60 leading-relaxed mb-6">Need a repair? Generate a Return Merchandise Authorization (RMA) number quickly.</p>
+                <button className="text-[11px] font-bold tracking-widest text-emerald-600 uppercase border-b border-emerald-600 pb-1 hover:text-amber-500 hover:border-amber-500 transition-colors">Initiate RMA &rarr;</button>
+              </div>
+              <div className="bg-neutral-50 p-8 rounded-xl border-2 border-slate-300 shadow-sm hover:shadow-lg transition-all text-center">
+                <MonitorPlay size={32} className="text-emerald-500 mx-auto mb-4" />
+                <h4 className="text-xl font-bold text-emerald-950 mb-3">Schedule a Demo</h4>
+                <p className="text-[13px] text-black/60 leading-relaxed mb-6">Send us your defect samples. We'll run a live feasibility test and demo the system via video call.</p>
+                <button className="text-[11px] font-bold tracking-widest text-emerald-600 uppercase border-b border-emerald-600 pb-1 hover:text-amber-500 hover:border-amber-500 transition-colors">Book Demo &rarr;</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Regional Reps */}
+        <section className="px-[3%] w-full py-[10vh] bg-emerald-950 text-white relative overflow-hidden">
+          <div className="max-w-[1440px] mx-auto w-full reveal-on-scroll">
+             <h2 className="text-3xl md:text-4xl font-light tracking-tighter uppercase mb-12 text-center">Regional <span className="font-bold">Sales & Service</span></h2>
+             <div className="grid md:grid-cols-4 sm:grid-cols-2 gap-6 text-center">
+                <div className="p-6 border border-white/10 rounded-xl bg-white/5 shadow-lg">
+                   <h4 className="font-bold text-amber-500 mb-2">North India</h4>
+                   <p className="text-[13px] text-emerald-100/70">Delhi, Haryana, Punjab, UP</p>
+                </div>
+                <div className="p-6 border border-white/10 rounded-xl bg-white/5 shadow-lg">
+                   <h4 className="font-bold text-amber-500 mb-2">West India</h4>
+                   <p className="text-[13px] text-emerald-100/70">Maharashtra, Gujarat, Goa</p>
+                </div>
+                <div className="p-6 border border-white/10 rounded-xl bg-white/5 shadow-lg">
+                   <h4 className="font-bold text-amber-500 mb-2">South India</h4>
+                   <p className="text-[13px] text-emerald-100/70">Karnataka, Tamil Nadu, Kerala</p>
+                </div>
+                <div className="p-6 border border-white/10 rounded-xl bg-white/5 shadow-lg">
+                   <h4 className="font-bold text-amber-500 mb-2">East India & Exports</h4>
+                   <p className="text-[13px] text-emerald-100/70">Bengal, Global Distribution</p>
+                </div>
+             </div>
+          </div>
+        </section>
+
+        {/* FAQs */}
+        <section className="px-[3%] w-full py-[12vh] bg-neutral-50 border-t border-slate-200">
+          <div className="max-w-[800px] mx-auto w-full reveal-on-scroll">
+            <h2 className="text-3xl md:text-4xl font-light tracking-tighter uppercase mb-10 text-emerald-950 text-center">Frequently <span className="font-bold">Asked Questions</span></h2>
+            <div className="space-y-4">
+               {[
+                 { q: "What is your typical project lead time?", a: "Standard Vision Systems deploy in 4-6 weeks. Custom SPMs and Robotics integrations take 10-14 weeks depending on mechanical complexity." },
+                 { q: "Do you provide on-site training?", a: "Yes. Every deployment includes 3 days of on-site operator training, covering software usage, lens cleaning, and basic troubleshooting." },
+                 { q: "Are your systems CFR 21 Part 11 Compliant?", a: "Absolutely. Our Pixelr software natively supports secure audit trails, electronic signatures, and immutable data logging out of the box." },
+                 { q: "Can we send samples for a feasibility study?", a: "We encourage it. Send your 'good' and 'bad' samples to our Thane lab. We'll run them under various optical setups and provide a detailed feasibility report." }
+               ].map((faq, i) => (
+                 <div key={i} className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm">
+                    <h4 className="font-bold text-emerald-950 mb-2 flex items-start gap-3"><span className="text-amber-500 mt-1"><Lightbulb size={16}/></span> {faq.q}</h4>
+                    <p className="text-[14px] text-black/60 pl-7 font-light">{faq.a}</p>
+                 </div>
+               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Newsletter */}
+        <section className="px-[3%] w-full py-[10vh] bg-emerald-50 border-t border-emerald-100 text-center">
+          <div className="max-w-[600px] mx-auto w-full reveal-on-scroll">
+             <h3 className="text-2xl font-bold text-emerald-950 mb-4">Stay Ahead of the Curve</h3>
+             <p className="text-[14px] text-black/60 font-light mb-6">Join 5,000+ engineers receiving our monthly insights on optical inspection, deep learning, and industrial automation.</p>
+             <form className="flex flex-col sm:flex-row gap-2 max-w-[400px] mx-auto" onSubmit={(e) => e.preventDefault()}>
+                <input type="email" placeholder="Enter your work email" className="flex-grow bg-white border border-emerald-200 rounded-lg px-4 py-3 text-[13px] outline-none focus:border-emerald-500" />
+                <button className="bg-emerald-950 text-amber-500 font-bold tracking-widest uppercase text-[11px] px-6 py-3 rounded-lg hover:bg-amber-500 hover:text-emerald-950 transition-colors shadow-lg">Subscribe</button>
+             </form>
+          </div>
+        </section>
+
+      </main>
+    </>
+  );
+}
+
+// ---------------------------------------------------------
+// 9. NEW PRODUCT PAGES
+// ---------------------------------------------------------
+
+function CoffeeContent({ currentPage, setPage }) {
+  usePageScroll(currentPage);
+  return (
+    <>
+      <section className="sticky top-0 h-screen w-full flex flex-col justify-center bg-black text-white relative overflow-hidden pt-32 z-0">
+        <div className="absolute inset-0 bg-black/80 mix-blend-overlay z-0"></div>
+        <img src={IMAGES.coffee} onError={handleImageError} className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-luminosity sepia-[0.3]" alt="Coffee Beans Processing" />
+        <div className="px-[3%] w-full relative z-10">
+          <div className="max-w-6xl w-full reveal-on-scroll">
+            <p className="text-[14px] font-bold tracking-widest text-amber-500 uppercase mb-4">AGRO AUTOMATION</p>
+            <h1 className="text-5xl md:text-7xl lg:text-[7.5rem] font-bold tracking-tight uppercase leading-[1] mb-8 text-white">
+              COFFEE <br /><span className="font-light text-amber-200">INSPECTION</span>
+            </h1>
+            <div className="border-l-2 border-amber-500 pl-6 ml-2">
+              <p className="text-emerald-50 font-light text-[17px] leading-relaxed max-w-2xl">
+                High-speed optical sorting and defect detection for premium coffee roasters, ensuring zero foreign matter and perfect roasting consistency.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <main className="relative z-10 bg-amber-50 rounded-t-xl shadow-[0_-20px_50px_rgba(0,0,0,0.1)] py-[10vh] lg:py-[15vh]">
+        <section className="px-[3%] w-full flex flex-col justify-center relative overflow-hidden">
+          <div className="max-w-[1440px] mx-auto w-full reveal-on-scroll">
+             <div className="grid md:grid-cols-3 gap-8">
+                <div className="bg-white p-10 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl transition-shadow relative overflow-hidden">
+                   <Focus size={32} className="text-amber-600 mb-6" />
+                   <h3 className="text-2xl font-bold text-emerald-950 mb-4">Colorimetric Grading</h3>
+                   <p className="text-[15px] font-light text-black/60 leading-relaxed">Multispectral cameras analyze every individual bean's roast profile in free-fall, calculating exact color uniformity across thousands of beans per second.</p>
+                </div>
+                <div className="bg-white p-10 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl transition-shadow relative overflow-hidden">
+                   <Target size={32} className="text-amber-600 mb-6" />
+                   <h3 className="text-2xl font-bold text-emerald-950 mb-4">Foreign Body Rejection</h3>
+                   <p className="text-[15px] font-light text-black/60 leading-relaxed">Deep learning algorithms isolate sticks, stones, and unripe 'quaker' beans, triggering ultra-fast pneumatic ejectors to maintain 99.9% purity.</p>
+                </div>
+                <div className="bg-white p-10 rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl transition-shadow relative overflow-hidden">
+                   <Box size={32} className="text-amber-600 mb-6" />
+                   <h3 className="text-2xl font-bold text-emerald-950 mb-4">Packaging Integrity</h3>
+                   <p className="text-[15px] font-light text-black/60 leading-relaxed">Post-roast packaging QA verifies valve placement, seal integrity, and label placement on coffee bags moving at over 150 units per minute.</p>
+                </div>
+             </div>
+          </div>
+        </section>
+
+        {/* Deep Learning Article */}
+        <section className="px-[3%] w-full py-[10vh]">
+          <div className="max-w-[1440px] mx-auto w-full reveal-on-scroll flex flex-col lg:flex-row gap-16 items-center">
+            <div className="lg:w-1/2">
+               <h2 className="text-3xl md:text-5xl font-light tracking-tighter uppercase mb-6 text-emerald-950">Deep Learning <span className="font-bold text-amber-600">Bean Sorting</span></h2>
+               <p className="text-[17px] font-light text-black/60 leading-relaxed mb-6">
+                 Traditional color sorters rely on simple thresholding, which often fails to distinguish between a dark roasted bean and a dark piece of foreign material (like a small stone or twig).
+               </p>
+               <p className="text-[17px] font-light text-black/60 leading-relaxed mb-8">
+                 Invade Machines deploys proprietary Convolutional Neural Networks (CNNs) trained on millions of coffee bean images. Our cameras capture 360-degree views of beans in free-fall, identifying complex geometric defects like insect damage, fungus, and sour beans with over 99% accuracy, firing precise pneumatic jets to eject bad beans before they hit the roasting drum.
+               </p>
+               <div className="flex gap-4">
+                 <span className="px-4 py-2 bg-emerald-900 text-white rounded-md text-[11px] font-bold tracking-widest uppercase">99.9% Yield</span>
+                 <span className="px-4 py-2 bg-amber-500 text-emerald-950 rounded-md text-[11px] font-bold tracking-widest uppercase">Zero False Ejects</span>
+               </div>
+            </div>
+            <div className="lg:w-1/2 rounded-xl overflow-hidden shadow-2xl h-[400px]">
+               <img src={IMAGES.manufacturing} onError={handleImageError} className="w-full h-full object-cover" alt="Optical Sorting Mechanism" />
+            </div>
+          </div>
+        </section>
+      </main>
+    </>
+  );
+}
+
+function SparklingWaterContent({ currentPage, setPage }) {
+  usePageScroll(currentPage);
+  return (
+    <>
+      <section className="sticky top-0 h-screen w-full flex flex-col justify-center bg-black text-white relative overflow-hidden pt-32 z-0">
+        <div className="absolute inset-0 bg-black/80 mix-blend-overlay z-0"></div>
+        <div className="absolute inset-0 bg-blue-900/20 mix-blend-color z-0"></div>
+        <img src={IMAGES.water} onError={handleImageError} className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-luminosity" alt="Bottling Line" />
+        <div className="px-[3%] w-full relative z-10">
+          <div className="max-w-6xl w-full reveal-on-scroll">
+            <p className="text-[14px] font-bold tracking-widest text-blue-400 uppercase mb-4">BEVERAGE QA</p>
+            <h1 className="text-5xl md:text-7xl lg:text-[7.5rem] font-bold tracking-tight uppercase leading-[1] mb-8 text-white">
+              SPARKLING <br /><span className="font-light text-blue-200">WATER</span>
+            </h1>
+            <div className="border-l-2 border-blue-400 pl-6 ml-2">
+              <p className="text-blue-50 font-light text-[17px] leading-relaxed max-w-2xl">
+                Combating refraction and bubbles to deliver perfect fill-level sensing, cap skew detection, and PET bottle integrity.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <main className="relative z-10 bg-slate-50 rounded-t-xl shadow-[0_-20px_50px_rgba(0,0,0,0.1)] py-[10vh] lg:py-[15vh]">
+        <section className="px-[3%] w-full flex flex-col justify-center relative overflow-hidden">
+          <div className="max-w-[1440px] mx-auto w-full reveal-on-scroll">
+             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {[
+                  { title: "Fill Level & Carbonation", icon: Thermometer, desc: "Infrared sensors cut through condensation to verify liquid volume." },
+                  { title: "Cap Skew & Seal", icon: Cog, desc: "360-degree cameras ensure tamper rings are intact and caps are torqued." },
+                  { title: "Label Alignment", icon: ScanLine, desc: "OCR and pattern matching to detect torn, skewed, or missing branding." },
+                  { title: "Foreign Particles", icon: Eye, desc: "AI models trained to ignore carbonation bubbles while catching glass/plastic shards." }
+                ].map((feature, i) => (
+                  <div key={i} className="bg-white p-8 rounded-xl border-2 border-slate-300 shadow-lg text-center hover:-translate-y-2 hover:shadow-xl transition-all">
+                     <feature.icon size={32} className="text-blue-500 mx-auto mb-4" />
+                     <h4 className="font-bold text-slate-900 mb-3">{feature.title}</h4>
+                     <p className="text-[13px] text-slate-600 font-light">{feature.desc}</p>
+                  </div>
+                ))}
+             </div>
+          </div>
+        </section>
+
+        {/* High Speed Bottling Article */}
+        <section className="px-[3%] w-full py-[10vh]">
+          <div className="max-w-[1440px] mx-auto w-full reveal-on-scroll flex flex-col lg:flex-row-reverse gap-16 items-center">
+            <div className="lg:w-1/2">
+               <h2 className="text-3xl md:text-5xl font-light tracking-tighter uppercase mb-6 text-slate-900">Overcoming <span className="font-bold text-blue-600">Refraction</span></h2>
+               <p className="text-[17px] font-light text-black/60 leading-relaxed mb-6">
+                 Inspecting clear liquids inside clear PET or glass bottles is notoriously difficult for traditional machine vision systems due to uncontrolled refraction, surface condensation, and carbonation bubbles.
+               </p>
+               <p className="text-[17px] font-light text-black/60 leading-relaxed mb-8">
+                 We overcome these physics challenges by combining short-wave infrared (SWIR) imaging with specialized polarized backlighting. This allows our sensors to "see through" external water droplets on chilled bottles to accurately measure the internal meniscus level, ensuring absolute compliance with legal metrology standards while running at speeds exceeding 70,000 bottles per hour.
+               </p>
+               <div className="flex gap-4">
+                 <span className="px-4 py-2 bg-blue-900 text-white rounded-md text-[11px] font-bold tracking-widest uppercase">70,000 BPH</span>
+                 <span className="px-4 py-2 bg-slate-200 text-slate-800 rounded-md text-[11px] font-bold tracking-widest uppercase">SWIR Imaging</span>
+               </div>
+            </div>
+            <div className="lg:w-1/2 rounded-xl overflow-hidden shadow-2xl h-[400px]">
+               <img src={IMAGES.inspectionLabs} onError={handleImageError} className="w-full h-full object-cover grayscale" alt="Bottling Inspection Node" />
+            </div>
+          </div>
+        </section>
+      </main>
+    </>
+  );
+}
+
+function OliveOilContent({ currentPage, setPage }) {
+  usePageScroll(currentPage);
+  return (
+    <>
+      <section className="sticky top-0 h-screen w-full flex flex-col justify-center bg-black text-white relative overflow-hidden pt-32 z-0">
+        <div className="absolute inset-0 bg-black/80 mix-blend-overlay z-0"></div>
+        <img src={IMAGES.oliveOil} onError={handleImageError} className="absolute inset-0 w-full h-full object-cover opacity-40 mix-blend-luminosity sepia-[0.2]" alt="Olive Oil Grading" />
+        <div className="px-[3%] w-full relative z-10">
+          <div className="max-w-6xl w-full reveal-on-scroll">
+            <p className="text-[14px] font-bold tracking-widest text-emerald-500 uppercase mb-4">PREMIUM F&B</p>
+            <h1 className="text-5xl md:text-7xl lg:text-[7.5rem] font-bold tracking-tight uppercase leading-[1] mb-8 text-white">
+              OLIVE OIL <br /><span className="font-light text-emerald-300">GRADING</span>
+            </h1>
+            <div className="border-l-2 border-emerald-500 pl-6 ml-2">
+              <p className="text-emerald-50 font-light text-[17px] leading-relaxed max-w-2xl">
+                Advanced optical clarity analysis and premium packaging inspection for extra virgin olive oil producers.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <main className="relative z-10 bg-emerald-50 rounded-t-xl shadow-[0_-20px_50px_rgba(0,0,0,0.1)] py-[10vh] lg:py-[15vh]">
+        <section className="px-[3%] w-full flex flex-col justify-center relative overflow-hidden">
+          <div className="max-w-[1440px] mx-auto w-full reveal-on-scroll flex flex-col lg:flex-row items-center gap-16">
+            <div className="lg:w-1/2">
+              <h2 className="text-3xl md:text-4xl font-light tracking-tighter uppercase leading-[1.1] mb-6 text-emerald-950">
+                LIQUID <span className="font-bold text-emerald-800">GOLD</span>
+              </h2>
+              <p className="text-black/60 font-light text-[17px] leading-relaxed mb-6">
+                Premium oils require premium quality assurance. Our specialized backlighting arrays analyze the refractive index and colorimetry of olive oil in real-time, detecting sediment and ensuring grade consistency.
+              </p>
+              <ul className="space-y-4 mb-8">
+                <li className="flex items-center gap-3 text-emerald-900 font-medium"><Sun className="text-amber-500" size={20} /> Color & Turbidity Analysis</li>
+                <li className="flex items-center gap-3 text-emerald-900 font-medium"><Target className="text-amber-500" size={20} /> Glass Bottle Flaw Detection</li>
+                <li className="flex items-center gap-3 text-emerald-900 font-medium"><ShieldCheck className="text-amber-500" size={20} /> Tamper-evident Seal Verification</li>
+              </ul>
+            </div>
+            <div className="lg:w-1/2 bg-white rounded-xl p-8 shadow-xl border-2 border-slate-300 relative overflow-hidden hover:shadow-2xl transition-shadow">
+               <div className="absolute top-0 right-0 w-64 h-64 bg-amber-400 rounded-full blur-[100px] opacity-20"></div>
+               <div className="relative z-10 flex flex-col items-center justify-center text-center py-10">
+                  <Aperture size={48} className="text-emerald-700 mb-6" />
+                  <h4 className="text-2xl font-bold text-emerald-950 mb-2">Multispectral Imaging</h4>
+                  <p className="text-[14px] text-black/60 max-w-sm">Utilizing specific wavelengths of light to 'see' through dark green glass bottles and inspect the oil directly without opening the container.</p>
+               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Fraud Prevention Article */}
+        <section className="px-[3%] w-full py-[10vh]">
+          <div className="max-w-[1440px] mx-auto w-full reveal-on-scroll flex flex-col lg:flex-row gap-16 items-center">
+            <div className="lg:w-1/2 rounded-xl overflow-hidden shadow-2xl h-[400px]">
+               <img src={IMAGES.manufacturing} onError={handleImageError} className="w-full h-full object-cover grayscale opacity-90" alt="Seal Inspection Node" />
+            </div>
+            <div className="lg:w-1/2">
+               <h2 className="text-3xl md:text-5xl font-light tracking-tighter uppercase mb-6 text-emerald-950">Preventing Fraud <span className="font-bold text-amber-600">& Oxidation</span></h2>
+               <p className="text-[17px] font-light text-black/60 leading-relaxed mb-6">
+                 Counterfeit "Extra Virgin" olive oil is a massive global issue. Beyond grading the oil itself, securing the supply chain requires absolute perfection in bottling.
+               </p>
+               <p className="text-[17px] font-light text-black/60 leading-relaxed mb-8">
+                 Our vision systems integrate high-resolution telecentric lenses to inspect the micro-clearances between the pour-spout, the nitrogen-flush seal, and the tamper-evident ring. By ensuring a hermetic seal at a microscopic level, we prevent premature oxidation on the shelf and protect brand integrity against tampering.
+               </p>
+               <div className="flex gap-4">
+                 <span className="px-4 py-2 bg-emerald-900 text-white rounded-md text-[11px] font-bold tracking-widest uppercase">Hermetic Verification</span>
+                 <span className="px-4 py-2 bg-amber-500 text-emerald-950 rounded-md text-[11px] font-bold tracking-widest uppercase">Telecentric Optics</span>
+               </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </>
+  );
+}
+
+function SilosContent({ currentPage, setPage }) {
+  usePageScroll(currentPage);
+  return (
+    <>
+      <section className="sticky top-0 h-screen w-full flex flex-col justify-center bg-black text-white relative overflow-hidden pt-32 z-0">
+        <div className="absolute inset-0 bg-black/80 mix-blend-overlay z-0"></div>
+        <img src={IMAGES.silos} onError={handleImageError} className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-luminosity sepia-[0.5]" alt="Industrial Silos" />
+        <div className="px-[3%] w-full relative z-10">
+          <div className="max-w-6xl w-full reveal-on-scroll">
+            <p className="text-[14px] font-bold tracking-widest text-amber-500 uppercase mb-4">INDUSTRIAL STORAGE</p>
+            <h1 className="text-5xl md:text-7xl lg:text-[7.5rem] font-bold tracking-tight uppercase leading-[1] mb-8 text-white">
+              SILOS <br /><span className="font-light text-amber-200">AUTOMATION</span>
+            </h1>
+            <div className="border-l-2 border-amber-500 pl-6 ml-2">
+              <p className="text-emerald-50 font-light text-[17px] leading-relaxed max-w-2xl">
+                Volumetric 3D profiling, thermal monitoring, and automated discharge control for bulk material storage.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <main className="relative z-10 bg-neutral-100 rounded-t-xl shadow-[0_-20px_50px_rgba(0,0,0,0.1)] py-[10vh] lg:py-[15vh]">
+        <section className="px-[3%] w-full flex flex-col justify-center relative overflow-hidden">
+          <div className="max-w-[1440px] mx-auto w-full reveal-on-scroll">
+             <div className="text-center mb-16">
+               <h2 className="text-3xl md:text-4xl font-light tracking-tighter uppercase leading-[1.1] text-emerald-950">
+                 BULK MATERIAL <span className="font-bold">INTELLIGENCE</span>
+               </h2>
+             </div>
+             <div className="grid md:grid-cols-3 gap-8">
+                <div className="bg-white p-10 rounded-xl shadow-lg border-2 border-slate-300 border-t-4 border-t-amber-500 hover:shadow-xl transition-shadow">
+                   <BarChart3 size={32} className="text-emerald-700 mb-6" />
+                   <h3 className="text-xl font-bold text-emerald-950 mb-4">LiDAR Volumetrics</h3>
+                   <p className="text-[14px] font-light text-black/60 leading-relaxed">Continuous 3D mapping of the silo interior provides exact inventory levels, identifying rat-holing or bridging in powders and grains.</p>
+                </div>
+                <div className="bg-white p-10 rounded-xl shadow-lg border-2 border-slate-300 border-t-4 border-t-rose-500 hover:shadow-xl transition-shadow">
+                   <Thermometer size={32} className="text-emerald-700 mb-6" />
+                   <h3 className="text-xl font-bold text-emerald-950 mb-4">Thermal Imaging</h3>
+                   <p className="text-[14px] font-light text-black/60 leading-relaxed">Real-time heat map generation to detect moisture pockets and prevent spontaneous combustion in organic material silos.</p>
+                </div>
+                <div className="bg-white p-10 rounded-xl shadow-lg border-2 border-slate-300 border-t-4 border-t-blue-500 hover:shadow-xl transition-shadow">
+                   <Network size={32} className="text-emerald-700 mb-6" />
+                   <h3 className="text-xl font-bold text-emerald-950 mb-4">Discharge Automation</h3>
+                   <p className="text-[14px] font-light text-black/60 leading-relaxed">PLC integration for automated vibration, aeration, and valve control to ensure consistent material flow directly linked to vision metrics.</p>
+                </div>
+             </div>
+          </div>
+        </section>
+
+        {/* 3D Profiling Article */}
+        <section className="px-[3%] w-full py-[10vh]">
+          <div className="max-w-[1440px] mx-auto w-full reveal-on-scroll flex flex-col lg:flex-row-reverse gap-16 items-center">
+            <div className="lg:w-1/2 rounded-xl overflow-hidden shadow-2xl h-[400px]">
+               <img src={IMAGES.integration} onError={handleImageError} className="w-full h-full object-cover grayscale opacity-90 sepia-[0.3]" alt="Silo Automation System" />
+            </div>
+            <div className="lg:w-1/2">
+               <h2 className="text-3xl md:text-5xl font-light tracking-tighter uppercase mb-6 text-emerald-950">Automated <span className="font-bold text-amber-600">Void Detection</span></h2>
+               <p className="text-[17px] font-light text-black/60 leading-relaxed mb-6">
+                 In bulk storage, unpredictable material settling can lead to structural disasters or production line starvation. Basic point-level sensors fail to account for irregular topography like rat-holing or side-wall buildup.
+               </p>
+               <p className="text-[17px] font-light text-black/60 leading-relaxed mb-8">
+                 We deploy multi-point 3D acoustic and optical scanners at the top of the silo to generate a continuous mesh of the material surface. When the Pixelr software detects hazardous formations, it automatically triggers localized air cannons or acoustic cleaners to restore flow, completely eliminating the need for dangerous manual entry by personnel.
+               </p>
+               <div className="flex gap-4">
+                 <span className="px-4 py-2 bg-emerald-900 text-white rounded-md text-[11px] font-bold tracking-widest uppercase">Zero Manual Entry</span>
+                 <span className="px-4 py-2 bg-amber-500 text-emerald-950 rounded-md text-[11px] font-bold tracking-widest uppercase">3D Topography</span>
+               </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </>
+  );
+}
+
+// ---------------------------------------------------------
+// 5A-10. SOLUTIONS - AGRO RESEARCH
+// ---------------------------------------------------------
+function AgroResearchContent({ currentPage }) {
+  usePageScroll(currentPage);
+  return (
+    <>
+      <section className="sticky top-0 h-screen w-full flex flex-col justify-center bg-black text-white relative overflow-hidden pt-32 z-0">
+        <div className="absolute inset-0 bg-black/80 mix-blend-overlay z-0"></div>
+        <img src={IMAGES.agro} onError={handleImageError} className="absolute inset-0 w-full h-full object-cover opacity-30 mix-blend-luminosity sepia-[0.3]" alt="Agro Research" />
+        <div className="px-[3%] w-full relative z-10">
+          <div className="max-w-6xl w-full reveal-on-scroll">
+            <p className="text-[14px] font-bold tracking-widest text-amber-500 uppercase mb-4">AGRICULTURAL ANALYSIS</p>
+            <h1 className="text-5xl md:text-7xl lg:text-[7.5rem] font-bold tracking-tight uppercase leading-[1] mb-8 text-white">
+              AGRO <br /><span className="font-light text-emerald-300">RESEARCH</span>
+            </h1>
+            <div className="border-l-2 border-amber-500 pl-6 ml-2">
+              <p className="text-emerald-50 font-light text-[17px] leading-relaxed max-w-2xl">
+                Advanced optical systems for crop protection, disease identification, and biological analysis across vital agricultural sectors.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <main className="relative z-10 bg-neutral-100 rounded-t-xl shadow-[0_-20px_50px_rgba(0,0,0,0.1)] py-[10vh] lg:py-[15vh]">
+        <section className="px-[3%] w-full flex flex-col justify-center relative overflow-hidden">
+          <div className="max-w-[1440px] mx-auto w-full reveal-on-scroll">
+             <div className="text-center mb-16">
+               <p className="text-[14px] font-bold tracking-widest text-emerald-600 uppercase mb-4">Specialized Domains</p>
+               <h2 className="text-3xl md:text-4xl font-light tracking-tighter uppercase leading-[1.1] text-emerald-950">
+                 RESEARCH <span className="font-bold">APPLICATIONS</span>
+               </h2>
+             </div>
+             
+             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+               {[
+                 { title: "Grapes", img: IMAGES.agroGrapes, desc: "Multispectral analysis for bunch architecture, berry size distribution, and early detection of downy mildew." },
+                 { title: "Citrus", img: IMAGES.agroCitrus, desc: "High-resolution sorting for external blemishes, color grading, and non-destructive internal quality assessment." },
+                 { title: "Sugarcane", img: IMAGES.agroSugarcane, desc: "Automated internode measurement and disease screening for red rot using polarized light microscopy." },
+                 { title: "Seed & Crop Inspection", img: IMAGES.agroSeed, desc: "Precision phenotyping of seeds, analyzing germination vigor, physical purity, and morphological traits." },
+                 { title: "Crop Protection (Insecticides & Pesticides)", img: IMAGES.agroCrop, desc: "Microscopic evaluation of droplet spread, leaf coverage, and efficacy of agrochemical formulations." },
+                 { title: "Cotton Research", img: IMAGES.agroCotton, desc: "Advanced fiber quality analysis including length, strength, fineness, and maturity using polarized microscopy." },
+                 { title: "Asbestos Analysis", img: IMAGES.agroAsbestos, desc: "Soil safety and contamination testing using phase contrast and polarized light microscopy for environmental compliance." }
+               ].map((app, i) => (
+                 <div key={i} className="bg-white rounded-xl border-2 border-slate-300 shadow-lg hover:shadow-xl hover:border-emerald-300 transition-all overflow-hidden flex flex-col group">
+                   <div className="h-48 overflow-hidden">
+                     <img src={app.img} onError={handleImageError} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" alt={app.title} />
+                   </div>
+                   <div className="p-8 flex flex-col flex-grow">
+                     <h3 className="text-xl font-bold text-emerald-950 mb-4">{app.title}</h3>
+                     <p className="text-[14px] font-light text-black/60 leading-relaxed">{app.desc}</p>
+                   </div>
+                 </div>
+               ))}
+             </div>
           </div>
         </section>
       </main>
