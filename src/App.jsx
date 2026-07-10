@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Microscope, Camera, ScanLine, Eye, Aperture, Cpu, Database, ArrowRight,
+  Microscope, Camera, Sprout, Coffee, ScanLine, Eye, Aperture, Cpu, Database, ArrowRight,
   MapPin, Menu, X, Globe2, Activity, ChevronDown, Layers, BarChart3, Network, ShieldCheck,
   Zap, Focus, MonitorPlay, Binary, Microchip, Beaker, TestTube2, Settings, Mail,
   Phone, Building, FileText, PieChart, ChevronRight, Briefcase, Search, Lightbulb, ShieldAlert,
@@ -500,15 +500,15 @@ function HomeContent({ setPage, currentPage }) {
                  BUILT FOR COMPLEX <br /><span className="font-medium text-emerald-700">ANALYSIS & INSPECTION</span>
                </h2>
                <p className="text-black/60 font-light text-[17px] leading-relaxed max-w-3xl mt-6 text-balance">
-                 Modern industries cannot rely on human visual limitations. We bring structure to complex manufacturing and research by integrating cutting-edge lenses, high-speed cameras, and proprietary software into a unified operating standard.
+                 Modern operations require precision beyond human visual limitations. We power scientific research, agricultural diagnostics, and industrial beverage automation by integrating advanced optics, multispectral imaging, and intelligent machine vision.
                </p>
             </div>
 
             <div className="grid md:grid-cols-3 gap-6 max-w-[1440px] mx-auto">
               {[ 
-                {icon: Microscope, title: "Stereo Microscopes", desc: "Large FOV & Long working distance with Ring, Goose Neck & Spot lighting.", route: 'microscopy'},
-                {icon: Beaker, title: "Compound Microscopes", desc: "Upright & Inverted systems with Phase Contrast, Dark Field & DIC.", route: 'microscopy'},
-                {icon: Camera, title: "Digital Cameras & Inspection Systems", desc: "USB2/3, Cooled CMOS & Smart Cameras capturing data at the edge.", route: 'cameras'}
+                {icon: Microscope, title: "Microscopy & IVF Systems", desc: "Stereo, Compound, and Special Purpose optical setups engineered for sub-micron biological research and IVF applications.", route: 'microscopy'},
+                {icon: Sprout, title: "Agro Research & Tech", desc: "Multispectral imaging and optical analysis for citrus, grape, sugarcane, seed inspection, and agricultural phenotyping.", route: 'agro-research'},
+                {icon: Coffee, title: "Beverage & Process Automation", desc: "Smart vision-based inspection and quality assurance for coffee, sparkling water lines, olive oil grading, and automated silos.", route: 'coffee'}
               ].map((item, i) => (
                 <div key={i} onClick={() => setPage(item.route)} className="p-8 bg-neutral-50 rounded-xl border-2 border-slate-300 shadow-lg hover:border-emerald-300 hover:shadow-xl transition-all group cursor-pointer hover:-translate-y-2 flex flex-col h-full">
                   <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center mb-6 border border-black/5 group-hover:bg-emerald-600 transition-colors shadow-sm text-emerald-600 group-hover:text-white flex-shrink-0">
