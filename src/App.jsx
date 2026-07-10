@@ -2490,7 +2490,7 @@ function ApplicationsContent({ currentPage }) {
         <div className="px-[3%] w-full relative z-10">
         <div className="max-w-6xl w-full reveal-on-scroll">
           <p className="text-[14px] font-bold tracking-widest text-amber-400 uppercase mb-4">INDUSTRIES WE SERVE</p>
-          <h1 className="text-4xl md:text-[72px] font-bold tracking-tight uppercase leading-[1] mb-6 text-white">
+          <h1 className="text-5xl md:text-7xl lg:text-[7.5rem] font-bold tracking-tight uppercase leading-[1] mb-8 text-white">
             MARKET <span className="font-light text-emerald-300">SEGMENTS</span>
           </h1>
           <p className="text-emerald-100/80 font-light text-[17px] leading-relaxed max-w-2xl">
@@ -2697,7 +2697,7 @@ function ClientsContent({ currentPage }) {
         <div className="px-[3%] w-full relative z-10">
         <div className="max-w-6xl w-full reveal-on-scroll">
           <p className="text-[14px] font-bold tracking-[0.25em] text-amber-500 uppercase mb-6">OUR NETWORK</p>
-          <h1 className="text-4xl md:text-[72px] font-bold tracking-tight uppercase leading-[1] mb-6 text-white">
+          <h1 className="text-5xl md:text-7xl lg:text-[7.5rem] font-bold tracking-tight uppercase leading-[1] mb-8 text-white">
             SUCCESS <span className="font-light text-emerald-300">STORIES</span>
           </h1>
           <p className="text-emerald-100/80 font-light text-[17px] leading-relaxed max-w-2xl">
