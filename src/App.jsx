@@ -35,13 +35,13 @@ const IMAGES = {
   oliveOil: "https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?auto=format&fit=crop&w=1600&q=80",
   silos: "https://images.unsplash.com/photo-1588667508496-e17f09f069f1?auto=format&fit=crop&w=1600&q=80",
   agro: "https://images.unsplash.com/photo-1592982537447-6f2b6c0c2912?auto=format&fit=crop&w=1600&q=80",
-  agroGrapes: "https://images.unsplash.com/photo-1596328546171-77e37b5fefea?auto=format&fit=crop&w=800&q=80",
-  agroCitrus: "https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?auto=format&fit=crop&w=800&q=80",
-  agroSugarcane: "https://images.unsplash.com/photo-1625698457101-fec2f565a8f0?auto=format&fit=crop&w=800&q=80",
-  agroSeed: "https://images.unsplash.com/photo-1588614959060-4d144f28b207?auto=format&fit=crop&w=800&q=80",
-  agroCrop: "https://images.unsplash.com/photo-1586771107445-d3afbf0a6ddb?auto=format&fit=crop&w=800&q=80",
-  agroCotton: "https://images.unsplash.com/photo-1605000797499-95a51c5269ae?auto=format&fit=crop&w=800&q=80",
-  agroAsbestos: "https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&w=800&q=80"
+  agroGrapes: "/agro/grape.avif",
+  agroCitrus: "/agro/citrus.jpg",
+  agroSugarcane: "/agro/sugarane.jpg",
+  agroSeed: "/agro/seed.webp",
+  agroCrop: "/agro/pesticides.jpg",
+  agroCotton: "/agro/cotton-harvester.webp",
+  agroAsbestos: "/agro/pipette.webp"
 };
 
 // ---------------------------------------------------------
@@ -282,7 +282,7 @@ export default function App() {
       {/* Navigation */}
       <nav className={`fixed top-0 left-0 right-0 z-[100] transition-all duration-700 ${
         isScrolled 
-        ? 'bg-black/95 backdrop-blur-xl border border-white/10 shadow-2xl py-3 text-white mx-[2%] mt-4 rounded-xl' 
+        ? 'bg-black/40 backdrop-blur-md border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] py-3 text-white mx-[2%] mt-4 rounded-xl' 
         : 'bg-transparent border-transparent py-4 text-white rounded-none'
       }`}>
         <div className="flex justify-between items-center px-[3%] w-full">
@@ -310,9 +310,9 @@ export default function App() {
                     {item.dropdown && <ChevronDown size={14} strokeWidth={2} className="opacity-70" />}
                   </button>
                   
-                  {/* Dropdown Menu */}
+                  {/* Dropdown Menu - Applied Glassmorphism */}
                   {item.dropdown && (
-                    <div className="absolute top-[100%] left-1/2 -translate-x-1/2 w-64 bg-black border border-emerald-800/50 shadow-2xl rounded-xl opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 flex flex-col p-2">
+                    <div className="absolute top-[100%] left-1/2 -translate-x-1/2 w-64 bg-black/60 backdrop-blur-md border border-white/10 shadow-[0_8px_32px_0_rgba(0,0,0,0.37)] rounded-xl opacity-0 translate-y-4 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 flex flex-col p-2">
                       <NavDropdownItems items={item.dropdown} setCurrentPage={setCurrentPage} />
                     </div>
                   )}
@@ -465,10 +465,10 @@ function HomeContent({ setPage, currentPage }) {
             <div className="w-2.5 h-2.5 bg-amber-400 rounded-sm shadow-[0_0_12px_#fbbf24] animate-pulse"></div>
             <p className="text-[14px] font-semibold tracking-[0.3em] uppercase text-white">Welcome to Invade Machines</p>
           </div>
-          <h1 className="text-5xl md:text-7xl lg:text-[8rem] font-bold tracking-tighter mb-6 text-white uppercase reveal-on-scroll visible leading-[1] inline-flex flex-col">
-            <span>ENGINEERED</span>
+          <h1 className="text-5xl md:text-7xl lg:text-[8rem] tracking-tighter mb-6 text-white uppercase reveal-on-scroll visible leading-[1] inline-flex flex-col">
+            <span className="font-semibold">ENGINEERED</span>
             <span className="flex items-center justify-between w-full mt-2">
-              <span className="text-white font-bold">TO</span>
+              <span className="text-white font-semibold">TO</span>
               <span className="font-black tracking-wide pr-2 text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 via-amber-400 to-amber-500 drop-shadow-[0_0_25px_rgba(251,191,36,0.3)]">OUTSEE</span>
             </span>
           </h1>
